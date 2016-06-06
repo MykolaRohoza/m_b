@@ -1,0 +1,164 @@
+
+#1 [08:13:32 06.06.2016] - string(1) "D"
+
+#2 [08:14:39 06.06.2016] - NULL
+
+#3 [08:14:59 06.06.2016] - NULL
+
+#4 [08:15:42 06.06.2016] - NULL
+
+#5 [08:18:15 06.06.2016] - NULL
+
+#6 [08:18:15 06.06.2016] - array(6) {
+  ["name"]=>
+  string(7) "Detya00"
+  ["old_name"]=>
+  string(9) "Detya.JPG"
+  ["alt"]=>
+  string(0) ""
+  ["image_show"]=>
+  string(2) "on"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#7 [08:30:56 06.06.2016] - string(5) "Detya"
+
+#8 [08:31:23 06.06.2016] - string(5) "Detya"
+
+#9 [08:31:38 06.06.2016] - string(12) "Lukoshko_nyu"
+
+#10 [08:33:06 06.06.2016] - array(6) {
+  ["name"]=>
+  string(12) "Lukoshko_nyu"
+  ["old_name"]=>
+  string(16) "Lukoshko_nyu.JPG"
+  ["alt"]=>
+  string(0) ""
+  ["image_show"]=>
+  string(2) "on"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#11 [08:34:59 06.06.2016] - array(5) {
+  ["name"]=>
+  string(5) "Detya"
+  ["old_name"]=>
+  string(9) "Detya.JPG"
+  ["alt"]=>
+  string(0) ""
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#12 [08:41:20 06.06.2016] - array(6) {
+  ["name"]=>
+  string(5) "Detya"
+  ["old_name"]=>
+  string(9) "Detya.JPG"
+  ["alt"]=>
+  string(0) ""
+  ["image_show"]=>
+  string(2) "on"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#13 [08:42:26 06.06.2016] - array(6) {
+  ["name"]=>
+  string(7) "Detya99"
+  ["old_name"]=>
+  string(9) "Detya.JPG"
+  ["alt"]=>
+  string(27) "Новое описание"
+  ["image_show"]=>
+  string(2) "on"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#14 [08:43:16 06.06.2016] - array(6) {
+  ["name"]=>
+  string(7) "Detya99"
+  ["old_name"]=>
+  string(11) "Detya99.JPG"
+  ["alt"]=>
+  string(0) ""
+  ["image_show"]=>
+  string(2) "on"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#15 [08:44:18 06.06.2016] - array(6) {
+  ["name"]=>
+  string(5) "Detya"
+  ["old_name"]=>
+  string(11) "Detya99.JPG"
+  ["alt"]=>
+  string(23) "06.06.2016 - [08:06:16]"
+  ["image_show"]=>
+  string(2) "on"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#16 [10:06:55 06.06.2016] - array(6) {
+  ["name"]=>
+  string(5) "Detya"
+  ["old_name"]=>
+  string(9) "Detya.JPG"
+  ["alt"]=>
+  string(0) ""
+  ["image_show"]=>
+  string(2) "on"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#17 [10:10:15 06.06.2016] - array(6) {
+  ["name"]=>
+  string(10) "Детка"
+  ["old_name"]=>
+  string(9) "Detya.JPG"
+  ["alt"]=>
+  string(27) "Описание детки"
+  ["image_show"]=>
+  string(2) "on"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#18 [10:10:28 06.06.2016] - array(5) {
+  ["name"]=>
+  string(5) "Detka"
+  ["old_name"]=>
+  string(9) "Detka.JPG"
+  ["alt"]=>
+  string(27) "Описание детки"
+  ["upload_img"]=>
+  string(18) "Отправить"
+  ["id_article"]=>
+  string(0) ""
+}
+
+#19 [11:49:06 06.06.2016] - string(9) "Detka.JPG"

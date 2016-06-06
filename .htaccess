@@ -1,0 +1,31 @@
+## Кодировка документов
+AddDefaultCharset utf-8
+#AddDefaultCharset koi8-u
+#AddDefaultCharset windows-1251
+#php_flag magic_quotes_gpc 0
+#php_flag magic_quotes_runtime 0
+
+## Файл индексного документа
+<IfModule dir_module>
+   DirectoryIndex index.php
+</IfModule>
+
+## Воспринимать файлы *.html как SSI
+#AddHandler server-parsed .html
+
+## Включить парсинг SSI выражений в устаревшем формате
+#SSILegacyExprParser on
+
+## Разрешение вывода содержимого каталога
+Options -Indexes
+
+## Не писать в access.log информацию о файлах *.gif и *.jpg
+#SetEnvIf Request_URI \.gif$ access_log
+#SetEnvIf Request_URI \.jpg$ access_log
+
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^(.*)$ index.php?q=$0  [QSA,L]

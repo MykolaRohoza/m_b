@@ -1,0 +1,16 @@
+User-Agent: *
+Disallow: /cgi-bin
+Disallow: /forum
+Disallow: /phorum
+Disallow: /phpbb
+Disallow: /phpBB
+Disallow: /V
+Disallow: /controller
+Disallow: /css
+Disallow: /fonts
+Disallow: /images
+Disallow: /js
+Disallow: /log
+Disallow: /model
+host: mind-body.ho.ua
+Sitemap: http://mind-body.ho.ua/sitemap.xml
