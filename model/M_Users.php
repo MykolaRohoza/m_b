@@ -90,7 +90,11 @@ class M_Users
     }
         
 
-    
+    public function registrateNewUserForAdmin( $name, $second){
+        $obj = array('user_name' => $name, 'user_second_name' => $second);
+        $result = $this->msql->Insert('users', $obj);
+        return $result;
+    }
     public function registration($login, $password, $telephone, $name, $second)
     {
         if($this->checkLogin($login)){
@@ -206,7 +210,7 @@ class M_Users
                     return null;
 
             // А теперь просто возвращаем пользователя по id_user.
-            $t = "SELECT * FROM users WHERE id_user = '%d'";
+            $t = "SELECT id_user, login, user_name, user_second_name, id_role FROM users WHERE id_user = '%d'";
             $query = sprintf($t, $id_user);
             $result = $this->msql->Select($query);
             return $result[0];	
@@ -566,6 +570,11 @@ private function GetSid(){
 
         // возвращаем SID
         return $sid;	
+    }
+    
+    public function deleteUser($id_user){
+        $result = $this->msql->Del('users', "id_user=$id_user");
+        return $result;
     }
 
 }

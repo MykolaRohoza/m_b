@@ -19,10 +19,6 @@ window.onload=function(){
         imgName();
         select2hidden();
     }
-
-
-
-
     reg();
 
 };

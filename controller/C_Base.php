@@ -35,16 +35,16 @@ abstract class C_Base extends C_Controller {
         $this->needStocks = true;
         $this->needLoginForm = true;
         $this->needCarosel = true;
-        
         $this->mUsers = M_Users::Instance();
+        $this->user = $this->validate($this->mUsers->Get());           
+        $this->isAdmin = ($this->user['id_role'] == 1);
     }
 
     //
     // Виртуальный обработчик запроса.
     //
     protected function OnInput() {
-//               var_dump('dfd');
-//        die();
+
         parent::OnInput();
         if($this->IsPost()){
             
@@ -69,7 +69,7 @@ abstract class C_Base extends C_Controller {
 
             // Очистка старых сессий и определение текущего пользователя.
             //$this->mUsers->ClearSessions(); 
-            $this->user = $this->validate($this->mUsers->Get());
+
             if ($this->user == null && $this->needLogin) {
 
                 header("Location: /");
@@ -99,6 +99,7 @@ abstract class C_Base extends C_Controller {
 
 
     private function validate($arr){
+
         if($arr != null){
             foreach ($arr as $key => $value) {
                 if(preg_match('~id~', $key)){

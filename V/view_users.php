@@ -37,7 +37,7 @@
                     Тренера
                 </a>
                 <a href="/users/visitors">
-                    Пользователи
+                    Посетители
                 </a>
                 <a href="/users/all">
                     Все
@@ -46,13 +46,29 @@
                    <b>+</b> Новый пользователь
                 </a>
             </div>
-
+        <?php if(!$users):?>
+            <form class="new_user" method="post">
+                <div class="form-group">
+                    <label for="input-name">Имя</label>
+                    <input id="input-name" required="" type="text" class="form-control" placeholder="Name" name='user_name'>
+                </div>
+                <div class="form-group">
+                    <label for="input-sname">Фамилия</label>
+                    <input id="input-sname" required="" type="text" class="form-control" placeholder="Second name" name='user_second_name'>
+                </div>
+                <input type="submit" class="btn btn-primary btn-block save" name="create_new_user" value="Сохранить">
+                <a href="/users"><input type="button" class="btn btn-primary btn-block save" value="Отменить"></a>
+            </form>
+        <?php endif;?>
         <?php if($users):?> 
+
         <ul class="contacts">
         <?php foreach ($users as $id_user => $user):?>                   
             <li class="clearfix">
-
                 <div class="user_card">
+                    <div class="del_user">
+                        <a href="../del/<?=$id_user?>"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    </div>
                     <div class="more">
                         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                     </div>

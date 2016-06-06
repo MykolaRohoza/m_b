@@ -23,6 +23,7 @@
         <script src="/js/registration.js"></script>
         <script src="/js/main.js"></script>
         <script src="/js/users.js"></script>
+        <script src="/js/new_user.js"></script>
         <script src="/js/holders.js"></script>
         <script src="/js/edit.js"></script>
         <script src="/js/bootstrap.min.js"></script>
@@ -30,7 +31,7 @@
         <link href="/css/bootstrap.css" rel="stylesheet">
         <link href="/css/jquery.fancybox.css" rel="stylesheet" type="text/css" media="screen">
         <link type="text/css" rel="stylesheet" href="/css/style.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/jquery-ui.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/jquery_confirm.css"/>
         <link type="image/x-icon" rel="shortcut icon" href="/images/favicon.ico">
 
         <title>Mind-Body Харьков</title>

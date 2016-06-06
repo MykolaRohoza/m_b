@@ -110,12 +110,7 @@ function addChangeble(width, content, data_name, id_data, data_cont, id, contain
     $new_elem.insertAfter(container.children()[index]);
     
     var handler = function (result){
-        
         input2span($new_elem, result, id_data, data_cont, container, index);
-        handler.get_elem = function (){
-            return $new_elem;
-        };
-       
     };
     handler.get_elem = $new_elem;
     
@@ -203,7 +198,6 @@ function query_ajax(obj, handler){
             
         },
         success: function(data){
-            console.log(data);
             var result = JSON.parse(data);
             if(result) {
                 handler.get_elem.css('cursor', 'auto');
@@ -248,40 +242,31 @@ function  show_users_info(elem){
     }
 }
 
-function  save_exercises(elem){
-    var id_user =  elem.siblings('input[name="id_user"]').val();
-    var cont = elem.parent('form').siblings('.exercises_container'); 
+function  save_exercises($elem){
+    var id_user =  $elem.siblings('input[name="id_user"]').val(),
+        $cont = $elem.parent('form').siblings('.exercises_container'),
+        $exercises = $cont.children('.exercise'),
+        glue = '==||##', user_ex = glue;
 
-    var exercises = cont.children('.exercise'), glue = '==||##', user_ex = glue;
-    for (var i = 0; i < exercises.length; i++){
-        var exercise = $(exercises[i]);
-        user_ex += glue + exercise.children('input[name="id_exercise"]').val()  
-                + glue + exercise.children('span.ex').html()  
-                + glue + exercise.children('span.counts').html()
-                + glue + exercise.children('span.repeat').html();
+    for (var i = 0; i < $exercises.length; i++){
+        var $exercise = $($exercises[i]);
+        user_ex += glue + $exercise.children('input[name="id_exercise"]').val()  
+                + glue + $exercise.children('span.ex').html()  
+                + glue + $exercise.children('span.counts').html()
+                + glue + $exercise.children('span.repeat').html();
     }
-    var query = 'id_user=' + id_user + '&add_user_ex=' +  user_ex;
-
-    $.ajax({
-        type: 'POST',
-        url: '/resp/' + query,
-        data: query,
-        start: function (){
-            
-        },
-        success: function(data){
-            var result = JSON.parse(data);
-            if(result) {
-                cont.empty();
-                for (var i = 0; i < result.length; i++){    
-                    createExercise(cont, result[i]['id'], result[i]['ex'], result[i]['count'], result[i]['repeat']);
-                }
-            }
-            else{
-
-            }
+    var obj = {
+        'id_user':id_user, 
+        'add_user_ex':user_ex
+    },
+    handler = function (request){
+        $cont.empty();
+        for (var i = 0; i < request.length; i++){    
+            createExercise($cont, request[i]['id'], request[i]['ex'], request[i]['count'], request[i]['repeat']);
         }
-    });
+    };
+    handler.get_elem = $elem;
+    query_ajax(obj, handler);
     
 }
 
@@ -317,28 +302,16 @@ function addNewEx(str, id_exercise){
 function addNewExGetAll(str, id_exercise){
     if(str !== undefined && str.trim().length > 0){
     id_exercise = (id_exercise === undefined)?0:id_exercise;
-    var query = 'add_new_ex=' + str;
-    $.ajax({
-        type: 'POST',
-        url: '/resp/' + query,
-        data: query,
-        success: function(data){
-            var result = JSON.parse(data);
-            if(result) {
+    var obj = {'add_new_ex':str},
+        handler = function (request){
                 $('div.container_add_ex').remove();
                 $('#exercise_bank').append('<div class="container_add_ex">');
-                $.each(result, function(id_exercise, str) {
+                $.each(request, function(id_exercise, str) {
                     addNewEx(str, id_exercise);
                 });
                 setDraggable();
-            }
-            else{
-
-            }
-
-
-        }
-    });
+        };
+        query_ajax(obj, handler);
     }
 }
 function plus_counts(elem){
@@ -379,32 +352,21 @@ function deg_rep(elem){
 }
 
 function deg_ex(elem){
-    var jElem = $(elem);
-    var id_exercise = jElem.siblings('input[name="id_exercise"]').val();
+    var $elem = $(elem),
+        id_exercise = $elem.siblings('input[name="id_exercise"]').val();
     if(id_exercise !== undefined && id_exercise > 0){
-        var query = 'del_ex=&id_exercise=' + id_exercise;
+        var obj = {'del_ex':'', 'id_exercise': id_exercise},
+            handler = function(result){
+                $('div.container_add_ex').remove();
+                $('#exercise_bank').append('<div class="container_add_ex">');
+                $.each(result, function(id_exercise, str) {
+                    addNewEx(str, id_exercise);
+                });
+                setDraggable();
+            };
+            handler.get_elem = $elem;
         $('div.exercise input[value="' + id_exercise  + '"]').parent().remove();
-        $.ajax({
-            type: 'POST',
-            url: '/resp/' + query,
-            data: query,
-            success: function(data){
-                var result = JSON.parse(data);
-                if(result) {
-                    $('div.container_add_ex').remove();
-                    $('#exercise_bank').append('<div class="container_add_ex">');
-                    $.each(result, function(id_exercise, str) {
-                        addNewEx(str, id_exercise);
-                    });
-                    setDraggable();
-                }
-                else{
-
-                }
-
-
-            }
-        });
+        query_ajax(obj, handler);
     }
 }
 

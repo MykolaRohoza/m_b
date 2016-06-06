@@ -101,6 +101,7 @@ opacity: 0.7;
 main{
     background: #d8dae3;
     padding: 20px 0;
+    min-height: 400px;
 }
 .article{
     border-bottom: 1px solid #444b58;
@@ -392,7 +393,7 @@ display: block;
 .edit_action{
     right: 10px;
     top: 5px;
-    border: 2px solid #444b58;
+    border: 2px solid #ccc;
 }
 .exercises_container .ex{
     width: 40%;
@@ -449,7 +450,26 @@ div.more{
 div.more span{
     text-align: center;
 }
-input.save[type="button"]{
+.del_user{
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+    background: #FA8072;
+    position: absolute;
+    border-radius: 3px; 
+    
+    margin-top: 5px; 
+    right: 2px;
+    top: 3px;
+    cursor: pointer;
+}
+.del_user span{
+    text-align: center;
+    color: #333;
+}
+
+
+input.save[type="button"], input.save[type="submit"]{
     width: 25%;
     display: inline-block;
    

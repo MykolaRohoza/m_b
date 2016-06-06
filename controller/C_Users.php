@@ -36,13 +36,19 @@ class C_Users extends C_Base {
     // Виртуальный обработчик запроса.
     //
     protected function OnInput(){
-        
         parent::OnInput();
 
         
         // Обработка отправки формы.
         if ($this->IsPost()) {
 
+            if(isset($_POST['create_new_user'])){
+                $id_user = $this->mUsers->registrateNewUserForAdmin($_POST['user_name'],
+                        $_POST['user_second_name']);
+                header("Location: $this->controllerPath/new/$id_user");
+                die(); 
+                
+            }            
             header("Location: /");
             die();
 
@@ -58,18 +64,10 @@ class C_Users extends C_Base {
             
             $this->content['nav']['users'] = 'class="active"';
             $this->content['images'] =  $this->galery;
-            
             $roles = $this->getRoles($this->_get[1]);
-
             $this->content['users'] = $this->getUsersByRoles($roles);
-
-            
             $mExe = M_Exercises::Instance();
             $this->content['exercises'] = $this->getExercises($mExe);
-
-            
-            
-           
         }
                 
         
@@ -79,19 +77,7 @@ class C_Users extends C_Base {
             $result = $this->mUsers->getUsers($roles);
         }
         else{
-            $result = array();
-            $result[0] = array(
-                "id_user" => "-1",  
-                "login" => "", 
-                "user_name" => "",
-                "user_second_name" => "",
-                "id_role" => "3",
-                "description" => 'Посетитель',
-                );
-            $result[0]["user_name"] = "Имя";
-            $result[0]["user_second_name"] = "Фамилия";
-            $result[0]['contacts'] = array();
-            $result[0]['exercises'] = array();
+            $result = $this->mUsers->getUsers(3, $this->_get[2]);
         }
         return $result;
     }
@@ -105,6 +91,8 @@ class C_Users extends C_Base {
                 return 0;
             case 'new':
                 return -1;
+            case 'del':
+                return -2;
             default : return 3; // users
         }
     }

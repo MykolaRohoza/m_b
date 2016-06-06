@@ -57,6 +57,9 @@ M_startup();
             case('users') : 
                 $controller = new C_Users();
                 break;
+            case('del') : 
+                $controller = new C_Del();
+                break;
             default : $controller = new C_Main();
 	}
 
