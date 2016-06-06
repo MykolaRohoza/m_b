@@ -1,8 +1,5 @@
 $(function() {
     $('.full_container').hide();
-    $(window).scroll(function (){
-        getScroll();
-    });
     $('.exercises_container').sortable({
         delay: 250,
         start: function() {
@@ -10,9 +7,10 @@ $(function() {
         stop: function() {
             
         }
-        
-    });  
-    
+
+});  
+ 
+
     setDraggable(); 
     $('input[name="add_ex"]').on('click', function (){
         var ex_name = $('input[name="new_ex"]').val().trim();
@@ -25,30 +23,25 @@ $(function() {
     
     $('div.more').on('click', function (){
         show_users_info($(this));
-        getScroll($(this));
+
     });
 
 });
-// todo
-function getScroll($elem){
-    var max_height = $('div#contacts_container').height(),
-    $pusher = $('#pusher'),
-    scroll = $(window).scrollTop(),
-    offered_height = $pusher.parent().height() - $pusher.height()+ scroll;
-    if($elem && false){
-        $pusher.animate({
-            height: $pusher.parent().position().top - $elem.parent().position().top
-        }, 300);            
-    }
-    
-    if(max_height > offered_height || $pusher.height() > offered_height){
-    }
-        $pusher.height(scroll);
-}
 
+
+function tie($elem, goHome){ 
+    var $pusher = $('#pusher'),
+        pusher_height = (!goHome)?(parseInt($elem.parent().offset().top) - parseInt($pusher.offset().top)):0;
+    $pusher.animate({
+            height: pusher_height
+        }, 300); 
+}
 function  span2changeble(elem){
-    var $span = $(elem),
-        content = $span.html(),
+    var $span = $(elem);
+    if($span.siblings('input').length) {
+        return false;
+    }
+    var content = $span.html(),
         width = $span.width(),
         id = ($span.attr('id'))?$span.attr('id'):'0_',
         container = $span.parent(),
@@ -92,6 +85,7 @@ function getSelectInner ($elem, data_name, id_data, data_cont, id, handler){
 }
 
 function addChangeble(width, content, data_name, id_data, data_cont, id, container, index, is_select){
+    if(container.children('input').length) return false;
     var $new_elem;
     if(!is_select){
         $new_elem = $('<input type="text" value="' + content + '">');
@@ -209,6 +203,7 @@ function query_ajax(obj, handler){
             
         },
         success: function(data){
+            console.log(data);
             var result = JSON.parse(data);
             if(result) {
                 handler.get_elem.css('cursor', 'auto');
@@ -236,18 +231,20 @@ function getIdUserByElem(elem){
     return elem.parent().siblings('div.full_container').children('form').children('input[name="id_user"]').val();
 }
 function  show_users_info(elem){
-    
+
     var $elem = $(elem),
         cont = $elem.siblings('.full_container');
     if(cont.is(':hidden')){
         cont.slideDown("slow");
         $elem.children('span').removeClass();
         $elem.children('span').addClass('glyphicon glyphicon-arrow-up');
+        tie($elem);
     }
     else{
         cont.slideUp("slow");
         $elem.children('span').removeClass();
         $elem.children('span').addClass('glyphicon glyphicon-arrow-down');
+        tie($elem, true);
     }
 }
 

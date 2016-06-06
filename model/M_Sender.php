@@ -22,9 +22,9 @@ class M_Sender {
         /***************************************************
                 E-mail settings
         ****************************************************/
-        $this->website = 'f-i.ho.ua';       // Your site's domain (without www. part)
+        $this->website = 'mind-body.ho.ua';       // Your site's domain (without www. part)
         $this->send_to = $send_to;  // backup file will be sent to?
-        $this->from = 'f-i@' . $this->website;    // some hosting providers won’t let you send backups from invalid e-mail address
+        $this->from = 'mind-body@' . $this->website;    // some hosting providers won’t let you send backups from invalid e-mail address
         $this->code = $code; 
 
     }

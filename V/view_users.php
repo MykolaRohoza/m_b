@@ -42,10 +42,13 @@
                 <a href="/users/all">
                     Все
                 </a>
+                <a href="/users/new">
+                   <b>+</b> Новый пользователь
+                </a>
             </div>
 
-        <ul class="contacts">
         <?php if($users):?> 
+        <ul class="contacts">
         <?php foreach ($users as $id_user => $user):?>                   
             <li class="clearfix">
 
@@ -54,7 +57,13 @@
                         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                     </div>
                     <img class="photo" src="<?='http://' . $_SERVER['SERVER_NAME'] . '/images/carousel/' . $user['article_img_name']?>" alt="<?=$user['image_alt']?>">
-                    <h4><span><?=$user['user_name']?> <?=$user['user_second_name']?> - </span><span ondblclick="span2changeble(this)"><?=$user['description']?></span></h4>
+                    <h4>
+                        <span><?=$user['user_name']?></span>
+                        <span> </span>
+                        <span><?=$user['user_second_name']?></span>
+                        <span> - </span>
+                        <span ondblclick="span2changeble(this)"><?=$user['description']?></span>
+                    </h4>
                     <h4>
                         <span ondblclick="new_contact(this)">Контакты: </span>
                         <?php $i = 0; foreach($user['contacts'] as $contact){
@@ -108,6 +117,7 @@
 
             </li>
         <?php endforeach;?>
+            </ul>
         <?php endif;?>                     
                     </div>
 

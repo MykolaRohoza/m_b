@@ -94,34 +94,9 @@ class M_Articles
                 //M_Lib::addLog($result);
         return $articles;
     }
-    public function getAlts(){
-        $query = "SELECT image_name, image_alt FROM images WHERE image_show='1'";
-        $res = $this->msql->Select($query);
-        $result = array();
-        if(count($res[0]) > 0){
-            foreach ($res as $value){ 
-                 
-                $result[$value['image_name']] = $value['image_alt'];
-            }
-        }
-        return $result;
-    }
-    public function delAlt($name){
-        $tmp = "image_alt='%s'";
-        $where = sprintf($tmp, $name);
-        $result = $this->msql->Del('images', $where);
-        return $result;
-    }
-    public function setAlts($image_name, $image_alt, $image_new_name, $image_show){  
-        $img_show = ($image_show)?1:0;
-        $object = array('image_alt' => $image_alt, 'image_name' => $image_new_name, 'image_show' => $img_show);
-        
-        $table = 'images';
-        if(!($this->msql->Update($table, $object, "image_name='$image_name'", true, true) > 0)){
-            $this->msql->Insert($table, $object);
-        }
-        
-    }
+
+
+
     
     
     
@@ -133,83 +108,26 @@ class M_Articles
            
         }
         else{
-            if(!$message){
-                $message = 'ошибка при сохранения';
-            }
-            else{
-                if(is_numeric($message)){
-                    $message = 'статья успешно обновлена';
-                }
-                else{
-                    $message = 'изменений в статье не найдено';
-                }
 
+            if(is_numeric($message)){
+                $message =  ($message)?'статья успешно обновлена':'изменений в статье не найдено';
             }
+            else {
+                $message = 'ошибка при сохранения';
+            }    
         }
 
         return $message;
     }
-    public function renameArticleImg($newName, $oldName){
-        return $this->msql->Update('articles', array('article_img_name' => $newName), 'article_img_name=' .  "'" . $oldName . "'");
 
-    }
     public function delete($table, $where){
         return ($this->msql->Del($table, $where) > 0);
         
     }
 
  
-    private function generateSQL($selectStr, $from , $id_user, $id_group,  $id_contr, $id_operation, $date1, $date2, $isAllDates){
-        $query  = "SELECT %s FROM %s";
-        $query  = sprintf($query, $selectStr, $from);
-        if($id_user !=0 ){
-            // если получен ИД пользователя возвращается его сумма
-            $query .= " WHERE transactions.id_user = '%d' AND id_operation != 7" ;
-            $query  = sprintf($query, $id_user);
-        }
-        else{
-            if($id_group != 0){
-                // если получен ИД группы возвращается ее сумма
-                $query .= " WHERE transactions.id_group = '%d'";
-                $query  = sprintf($query, $id_group);
-            }
-            else{
-            // если не получено ничего возвращаем всю сумму
-                // затычка для AND
-                $query .= " WHERE 1=1";
-            }
-        }
-            
-        if( $id_operation !=  0){
-            $query .= " AND transactions.id_operation = '%d'" ;
-            $query  = sprintf($query, $id_operation);
-           
-        }
-        if($id_contr != 0){
-            $query .= " AND transactions.id_contr = '%d'" ;
-            $query  = sprintf($query, $id_contr);           
-        }
-        if(!$isAllDates){
-            
-            $query .= " AND transactions.date >='%s' AND transactions.date <= '%s'" ;
-            $query  = sprintf($query, date("Y-m-d", strtotime($date1)), date("Y-m-d", strtotime($date2)));
-        }
-        
-        return $query;
-    }
-    
-    public function getRoles() {
-        $query = "SELECT id_role, role_name FROM roles";
-        $result = $this->msql->Select($query);
-        $roles = array();
-        if($result != null){
-            foreach ($result as $value){
-                $roles[$value['id_role']] = $value['role_name'];
-            }
-        }
-        return $roles;
-    }
-    
+
+   
     private function validateArtCont($assocRes, $lang) {
         $articles = array();      
         if(count($assocRes) > 0){

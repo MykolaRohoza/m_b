@@ -59,7 +59,8 @@
             <div class="article article-left" id='changeWrap1'>
                 <div class="editor">
 
-                    Вид статьи<select name='article_func'>
+                    <label for="article_func">Вид статьи</label> 
+                    <select id="article_func" name='article_func'>
                             <option value="1" <?php if($article_func == 1){echo 'selected="selected"';} ?>>Акция</option>
                             <option value="2" <?php if($article_func == 2){echo 'selected="selected"';} ?>>Статья</option>
 <!--                            <option value="3"<?php if($article_func == 3){echo 'selected="selected"';} ?>>Тема</option>
@@ -75,14 +76,16 @@
                         </select>
                         <br>
                -->
-               Назначение <select class="" name='article_dest'>
+                        <label for="article_dest">Назначение </label>
+                        <select class="" name='article_dest' id="article_dest">
                             <option value="1"  <?php if($article_dest == 1){echo 'selected="selected"';} ?>>Главная</option>
                             <option value="2" <?php if($article_dest == 2){echo 'selected="selected"';} ?>>Профилактор</option>
                             <option value="3" <?php if($article_dest == 3){echo 'selected="selected"';} ?>>Статьи</option>
                         </select>
             
 
-                        Размещение фото <select name='article_img_place'>
+                        <label for="article_img_place">Размещение фото</label>
+                        <select name='article_img_place' id="article_img_place">
                             <option value="none" <?php if($article_img_place == 'none'){echo 'selected="selected"';} ?>>Без фото</option>
                             <option value="top" <?php if($article_img_place == 'top'){echo 'selected="selected"';} ?>>Вверху</option>
                             <option value="left" <?php if($article_img_place == 'left'){echo 'selected="selected"';} ?>>Слева</option>
@@ -93,6 +96,7 @@
                 <br>
                 <div class="article_list">
                     <div class="add_article"><a href="/edit"><b>+</b> Добавить статью</a></div>
+                    <div class="add_article"><?php //var_dump(microtime(true)); var_dump( date('d.m.Y - [H:m:s]',microtime(true)));?></div>
                     <ul>
                    <?php foreach ($article_list as $article) :?>
                         <li><a href="/edit/<?=$article['id_article']?>"><b>№<?=$article['id_article']?></b> <?=$article['article_title']?></a></li>
@@ -102,44 +106,47 @@
             </div>
         </div>       
         </div>
-        <div class="col-sm-6">
+        
+        <div class="row">
+            <div class="col-sm-6">
 
-               
-            <div class="article article-left" id='changeWrap'>
-                <div class="editor">
-                    
-                <form method="post">
-                    <input type="hidden" value="<?=$id_article?>" name='id_article'>
-                    <input type="hidden" value="" name='article_func'>    
-                    <input type="hidden" value="" name='secondary_to'>    
-                    <input type="hidden" value="" name='article_dest'>     
-                    <input type="hidden" value="<?=$article_img_name;?>" name='article_img_name'>
-                    <input type="hidden" value="<?=$article_img_place;?>" name='article_img_place'>     
-                    <input type="text" value="<?=$article_title;?>" style="font-weight: 600;" name='article_title'>
-                    <br>
-                    <br>
-                    <textarea style="width: 100%; resize: none;" id="change"><?=$article_text;?></textarea>
-                    <textarea style="width: 100%; display: none;" id="hidden_change" name='article_text'></textarea>
-                    <input type="submit" value="Создать/Сохранить изменения" name='save'>
-                    <input type="submit" value="Удалить" name='delete'>
-                </form>
+
+                <div class="article article-left" id='changeWrap'>
+                    <div class="editor">
+
+                    <form method="post">
+                        <input type="hidden" value="<?=$id_article?>" name='id_article'>
+                        <input type="hidden" value="" name='article_func'>    
+                        <input type="hidden" value="" name='secondary_to'>    
+                        <input type="hidden" value="" name='article_dest'>     
+                        <input type="hidden" value="<?=$article_img_name;?>" name='article_img_name'>
+                        <input type="hidden" value="<?=$article_img_place;?>" name='article_img_place'>     
+                        <input type="text" value="<?=$article_title;?>" style="font-weight: 600;" name='article_title'>
+                        <br>
+                        <br>
+                        <textarea style="width: 100%; resize: none;" id="change"><?=$article_text;?></textarea>
+                        <textarea style="width: 100%; display: none;" id="hidden_change" name='article_text'></textarea>
+                        <input type="submit" value="Создать/Сохранить изменения" name='save'>
+                        <input type="submit" value="Удалить" name='delete'>
+                    </form>
+                    </div>
+                </div>
+            </div>       
+            <div class="col-sm-6">
+
+
+                <div class="article article-left clearfix" id="view_article">
+
+                    <h3 id='v_h3'></h3>
+
+                    <img id="article_img" <?php if(!$article_img_name){echo 'style="display:none;"';}?>  src="" alt="">
+                    <div id='v_content'>
+                    </div>
                 </div>
             </div>
-        </div>       
-        <div class="col-sm-6">
-
-               
-            <div class="article article-left clearfix" id="view_article">
-               
-                <h3 id='v_h3'></h3>
-
-                <img id="article_img" <?php if(!$article_img_name){echo 'style="display:none;"';}?>  src="" alt="">
-                <div id='v_content'>
-                </div>
-            </div>
-        </div>
+    </div>                  
         
 
 
 
-    </div>                  
+</div>                  

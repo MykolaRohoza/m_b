@@ -2,7 +2,7 @@
 ?>
 <?php 
 
-include_once('model/M_startup.php');
+require_once('model/M_startup.php');
 M_startup();
 	function __autoload($className){
 		$dir = explode('_', $className);
@@ -15,7 +15,7 @@ M_startup();
                             $dirPath .= "model/";
                             break;
 		}
-                 include_once($dirPath . $className . ".php");
+                require_once($dirPath . $className . ".php");
 	}
 	
         $info_ = explode('/', $_GET['q']);

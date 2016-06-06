@@ -196,7 +196,7 @@ footer{
         opacity: 1;
     }
 }
-@keyframes drop_in1{
+@keyframes drop_in{
     0%{
         left:0px;
     }
@@ -204,6 +204,7 @@ footer{
         left:200px;
     }
 }
+
 
 @media (max-width:1200px){
     .navbar-toggle{
@@ -308,12 +309,16 @@ label{
     float: left;
     width: 22px;
     height: 22px;
-    border: 1px solid #CAE1FF;
+    border: 1px solid transparent;
     -moz-border-radius: 12px; /*закругляем углы для Mozilla  */
     -webkit-border-radius: 12px;/* закругляем углы для Chrome, Safari   */
     border-radius: 12px; /*закругляем углы для остальных браузеров  */
     cursor: pointer;
 }
+.container_add_ex .exercise div.pd_btn{
+    float: right;
+}
+
 .exercise{
     display: inline-block;
     border: 3px solid #FFF;
@@ -353,9 +358,11 @@ label{
     display: inline-block;
     border: solid 1px #000;
     width: 100%;
-    padding: 2px;
-}
+    padding: 2px 10px 2px 5px;
+    overflow-y: scroll;
+    max-height: 180px;
 
+}
 
 div.sortable {
     width: 100px;
@@ -383,7 +390,7 @@ display: block;
     border-radius: 3px;
 }
 .edit_action{
-    right: 20px;
+    right: 10px;
     top: 5px;
     border: 2px solid #444b58;
 }
@@ -396,11 +403,11 @@ display: block;
     
 }
 .container_add_ex .exercise {min-width: 80%;}
+
 .message{
     display: block;
     text-align: center;
     color: red;
-    border: 1px solid red;
     font-size: 20px;
 }
 .editor select{
@@ -453,6 +460,7 @@ input.save[type="button"]{
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 90%);
     padding: 5px 10px;
     border-radius: 10px;
+    
 }
 #pusher{
     width:100%;

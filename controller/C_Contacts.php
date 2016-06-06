@@ -77,7 +77,10 @@ class C_Contacts extends C_Base{
     public function OnOutput() {   	
 
         //Генерация вложенных шаблонов
-
+        if($this->needStocks && count($this->content['stocks']) > 0){
+            $vars['stocks'] = $this->View('V/view_stocks.php',
+                    array('stocks' => $this->content['stocks'], 'isAdmin' => $this->isAdmin));
+        }
         $this->content['container_main'] = $this->View('V/view_contacts.php');
         parent::OnOutput();
         

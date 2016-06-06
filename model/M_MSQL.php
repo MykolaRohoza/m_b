@@ -39,7 +39,7 @@ class M_MSQL
     public function Select($query){
         $result = mysql_query($query);
         if (!$result) {
-            die(mysql_error());
+            die('#' .mysql_errno() . ' - ' . mysql_error());
         }
 
 	$arr = array();
@@ -62,7 +62,7 @@ class M_MSQL
     public function SelectGroupByPrKey($query, $pr_key, $container, $unique_columns){
         $result = mysql_query($query);
         if (!$result) {
-            die(mysql_error());
+            die('#' .mysql_errno() . ' - ' . mysql_error());
         }
         $arr = array();
         while($row = mysql_fetch_assoc($result)){
@@ -128,7 +128,7 @@ class M_MSQL
 		$result = mysql_query($query);
 								
 	if (!$result) {
-            die(mysql_error());
+            die('#' .mysql_errno() . ' - ' . mysql_error());
         }
         return mysql_insert_id();
 	}
@@ -169,11 +169,10 @@ class M_MSQL
 		$result = mysql_query($query);
 
 		if (!$result) {
-                    die(mysql_error() . ' ' . $query);
+                    die('#' .mysql_errno() . ' - ' . mysql_error());
                 }
         $res = mysql_affected_rows();
-
-        if(!$res && $result) $res = $result;
+        //if(!$res && $result) $res = $result;
         return 	$res;
 	}
 	
@@ -194,7 +193,7 @@ class M_MSQL
         
             $result = mysql_query($query);
             if (!$result){
-                    die(mysql_error());
+                die('#' .mysql_errno() . ' - ' . mysql_error());
             }
             return mysql_affected_rows();
 	}

@@ -38,7 +38,7 @@ class C_Office extends C_Base {
         // Обработка отправки формы.
         if ($this->IsPost()) {
 
-        if($this->mUsers->setNewPassword($this->user['id_user'], md5($this->_post['new_pass']))){
+        if($this->mUsers->setNewPassword($this->user['id_user'], md5(md5($this->_post['new_pass'])))){
             $message = 'пароль успешно изменен';
             
         }
@@ -76,9 +76,10 @@ class C_Office extends C_Base {
         //Генерация вложенных шаблонов
         
 
-
-
-
+        if($this->needStocks && count($this->content['stocks']) > 0){
+            $vars['stocks'] = $this->View('V/view_stocks.php',
+                    array('stocks' => $this->content['stocks'], 'isAdmin' => $this->isAdmin));
+        }
 
         $this->content = $this->View('V/view_office.php', $this->report);
         parent::OnOutput();

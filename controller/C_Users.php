@@ -49,7 +49,7 @@ class C_Users extends C_Base {
         }
         else
         {	
-            if ($this->user == null && $this->needLogin)
+            if (!$this->isAdmin)
             {       	
                 header("Location: /");
                 die();
@@ -60,8 +60,10 @@ class C_Users extends C_Base {
             $this->content['images'] =  $this->galery;
             
             $roles = $this->getRoles($this->_get[1]);
-            var_dump($roles);
+
             $this->content['users'] = $this->getUsersByRoles($roles);
+
+            
             $mExe = M_Exercises::Instance();
             $this->content['exercises'] = $this->getExercises($mExe);
 
@@ -73,7 +75,24 @@ class C_Users extends C_Base {
         
     }
     private function getUsersByRoles($roles){
-        $result = $this->mUsers->getUsers($roles);
+        if($roles >= 0) {
+            $result = $this->mUsers->getUsers($roles);
+        }
+        else{
+            $result = array();
+            $result[0] = array(
+                "id_user" => "-1",  
+                "login" => "", 
+                "user_name" => "",
+                "user_second_name" => "",
+                "id_role" => "3",
+                "description" => 'Посетитель',
+                );
+            $result[0]["user_name"] = "Имя";
+            $result[0]["user_second_name"] = "Фамилия";
+            $result[0]['contacts'] = array();
+            $result[0]['exercises'] = array();
+        }
         return $result;
     }
     private function getRoles($roleName){
@@ -84,6 +103,8 @@ class C_Users extends C_Base {
                 return 2;
             case 'all':
                 return 0;
+            case 'new':
+                return -1;
             default : return 3; // users
         }
     }

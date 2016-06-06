@@ -1,3 +1,4 @@
+
 <div class="col-sm-4">
     <?php foreach($stocks as $stock): ?>
             <div class="advertise">

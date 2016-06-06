@@ -60,7 +60,6 @@ function registrate(){
             url: '/resp/' + query,
             data: query,
             success: function(data){
-
                 var result = JSON.parse(data);
                 if(result) {
                     switch(result){
@@ -251,10 +250,10 @@ function getQuery(){
 function showMessage(elem, message){
 
     var parent = elem.parent();
-    parent.children('span[class="message"]').remove();
+    parent.children('span[class="message_reg"]').remove();
     parent.children('br:first').remove();
     if(message !==1 && message !==0) {
-        parent.prepend('<span class="message" style="color:red">' + message + '</span> <br>');
+        parent.prepend('<span class="message_reg" style="color:red">' + message + '</span> <br>');
     }
 
 }

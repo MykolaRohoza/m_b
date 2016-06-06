@@ -36,6 +36,7 @@ class C_Activate extends C_Base {
         
         parent::OnInput();
 
+
         
         // Обработка отправки формы.
         if ($this->IsPost()) {

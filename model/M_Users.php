@@ -70,9 +70,9 @@ class M_Users
                     return false;
 
             $id_user = $user['id_user'];
-
             // проверяем пароль
-            if ($user['password'] != md5($password))
+
+            if ($user['password'] != md5(md5($password)))
                     return false;
 
             // запоминаем имя и md5(пароль)
@@ -80,7 +80,7 @@ class M_Users
             {
                     $expire = time() + 3600 * 24 * 100;
                     setcookie('login', $login, $expire);
-                    setcookie('password', md5($password), $expire);
+                    setcookie('password', md5(md5($password)), $expire);
             }		
 
             // открываем сессию и запоминаем SID
@@ -100,14 +100,27 @@ class M_Users
              return -2;
         }
         
-        $code = md5(time(true));
+        $code = $this->GenerateStr(20);
         $obj = array('user_name' => $name, 'user_second_name' => $second, 'login' => $login,
-            'password' => md5($password), 'telephone' => $telephone, 'user_code' => $code); 
+            'password' => md5(md5($password)), 'user_code' => $code); 
+        
+        // TODO Занесение в контакты 
         if($this->checkLogin($login, 0) || $this->checkPhone($telephone, 0)){
             $result = $this->activate('', $obj);
         }
         else{
-            $result = ($this->msql->Insert('users', $obj) > 0);
+            $result = $this->msql->Insert('users', $obj);
+            if($result > 0){
+                $cont_obj = array();
+                $cont_obj[] = array('contact_info' => $result, 'contact' => $login, 'contact_dest' => 2);
+                $cont_obj[] = array('contact_info' => $result, 'contact' => $telephone, 'contact_dest' => 1);
+                foreach ($cont_obj as $value) {
+                    $this->msql->Insert('contact_infos', $value);
+                }
+
+            }
+            $result = ($result > 0);
+            
         }
         
         if($result) {
@@ -121,20 +134,23 @@ class M_Users
         return $result;
     }
     
-    public function checkLogin($login, $user_code_status = 1)
+    public function checkContact($contact, $user_code_status)
     {	
-            $t = "SELECT DISTINCT id_user FROM users WHERE login = '%s' AND user_code_status=$user_code_status";
-            $query = sprintf($t, mysql_real_escape_string($login));
+            $t = "SELECT DISTINCT u.id_user FROM users u RIGHT JOIN contact_infos c_i "
+                    . "ON u.id_user = c_i.contact_info WHERE c_i.contact = '%s' AND "
+                    . "u.user_code_status=$user_code_status";
+            $query = sprintf($t, mysql_real_escape_string($contact));
             $result = $this->msql->Select($query);
             return $result[0]['id_user'] > 0;
     }
-    
-    public function checkPhone($telephone, $user_code_status=1)
+    private function checkLogin($contact, $user_code_status = 1)
     {	
-            $t = "SELECT DISTINCT id_user FROM users WHERE telephone = '%s' AND user_code_status=$user_code_status";
-            $query = sprintf($t, $telephone);
-            $result = $this->msql->Select($query);
-            return $result[0]['id_user'] > 0;
+        return $this->checkContact($contact, $user_code_status);
+    }
+    
+    private function checkPhone($telephone, $user_code_status=1)
+    {	
+        return $this->checkContact($telephone, $user_code_status);    
     }
     
     
@@ -144,7 +160,7 @@ class M_Users
             foreach ($resentObj as $key => $val){
                 $object[$key] = $val;
             }
-            $where = "telephone='{$resentObj['telephone']}' OR login='{$resentObj['login']}'";
+            $where = "login='{$resentObj['login']}'";
             $object = array('user_code' => $resentObj['user_code'], 'user_code_status' => 0);
         }
         else{
@@ -281,39 +297,8 @@ class M_Users
             return $userPrivs;
     }
 
-    public function getUserGroups($id_user) {
 
-        $temp = "SELECT DISTINCT id_group, group_name FROM transactions LEFT JOIN groups USING (id_group) WHERE id_user = '%d'";
-        $query = sprintf($temp, $id_user);
 
-        $result = $this->msql->Select($query);
- 
-        $groups = array();
-        if($result != null){
-            foreach ($result as $value){
-                if($value['id_group'] != 0 || $value['id_group'] != null){
-                    $groups[$value['id_group']] = $value['group_name'];
-                }
-            }
-        }
-       
-        return $groups;
-
-    }
-    
-    public function getActualUserGroupName($id_user) {
-        $temp = "SELECT group_name FROM groups RIGHT JOIN users USING(id_group)"
-                . " WHERE id_user = '%d'";
-        $query = sprintf($temp, $id_user);
-
-        $result = $this->msql->Select($query);
-        $groupName =  $result[0]['group_name'];
-        if ($groupName == '') {
-            $groupName = '-';
-        }
-        return $groupName;
-
-    }
     
     //
     // Проверка активности пользователя
@@ -419,29 +404,6 @@ private function GetSid(){
         return $sid;		
     }
 
-    //
-    // Открытие новой сессии
-    // результат	- SID
-    //
-    private function OpenSession($id_user) {
-        // генерируем SID
-        $sid = $this->GenerateStr(10);
-
-        // вставляем SID в БД
-        $now = date('Y-m-d H:i:s'); 
-        $session = array();
-        $session['id_user'] = $id_user;
-        $session['sid'] = $sid;
-        $session['time_start'] = $now;
-        $session['time_last'] = $now;				
-        $this->msql->Insert('sessions', $session); 
-
-        // регистрируем сессию в PHP сессии
-        $_SESSION['sid'] = $sid;				
-
-        // возвращаем SID
-        return $sid;	
-    }
 
     //
     // Генерация случайной последовательности
@@ -487,7 +449,71 @@ private function GetSid(){
         return $result;
      
     }
-    
+ 
+    public function getRoles($id_user = 0){
+        $query = "SELECT id_role, description FROM roles";
+        if($id_user){
+            $query .= " WHERE id_user='%d'";  
+            $query = sprintf($query, mysql_real_escape_string($id_user));
+        }
+        $result = $this->msql->Select($query);
+        $roles = array();
+        foreach ($result as $value) {
+            $roles[$value['id_role']] = $value['description'];
+        }
+        return $roles;
+    }
+    public function getRoleByID($id_user){
+        $t = "SELECT u.id_user, r.id_role, r.description FROM users u LEFT JOIN roles r USING(id_role) "
+                . "WHERE u.id_user='%d'";
+        $query = sprintf($t, mysql_real_escape_string($id_user));
+        $result = $this->msql->Select($query);
+        $roles = array('id_role'  => $result[0]['description']);
+        return $roles;
+    }
+    public function getDiagnosis($id_user){
+        $t = "SELECT id_user, diagnosis FROM users WHERE id_user='%d'";
+        $query = sprintf($t, mysql_real_escape_string($id_user));
+        $result = $this->msql->Select($query);
+        $roles = array('diagnosis'  => $result[0]['diagnosis']);
+        return $roles;
+    }
+    public function saveDiagnosis($request){
+        $tmp = "id_user='%d'";
+        $where = sprintf($tmp, $request['id_user']);
+        $object = array('diagnosis' => $request['diagnosis']);
+        $result = $this->msql->Update('users', $object, $where);
+        return $result;
+    }
+    public function saveContact($request){
+        if(!$request['id_info']){
+            $object = array('contact' => $request['contact'], 'contact_info' => $request['id_user']);
+            $result = $this->msql->Insert('contact_infos', $object);
+        }
+        else{   
+            $tmp = "id_info='%d'";
+            $where = sprintf($tmp, $request['id_info']);
+            $object = array('contact' => $request['contact']);
+            $this->msql->Update('contact_infos', $object, $where);
+            $result = $request['id_info'];
+        }
+        return $result;
+    }
+    public function getContact($request){
+        $t = "SELECT id_info, contact FROM contact_infos WHERE id_info='%d'";
+        $query = sprintf($t, mysql_real_escape_string($request['id_info']));
+        $result = $this->msql->Select($query);
+        $contact = array('id_info' => $result[0]['id_info'], 'contact'  => $result[0]['contact']);
+        return $contact;
+    }
+    public function changeUserRole($request){
+        $tmp = "id_user='%d'";
+        $where = sprintf($tmp, $request['id_user']);
+        $object = array('id_role' => $request['id_role']);
+        $result = $this->msql->Update('users', $object, $where);
+        return $result;
+    }
+
     
     public function addUserEx($id_user, $exercises){
             $tmp = "id_user='%d'";
@@ -518,4 +544,28 @@ private function GetSid(){
         }
         return $result;
     }
+        //
+    // Открытие новой сессии
+    // результат	- SID
+    //
+    private function OpenSession($id_user) {
+        // генерируем SID
+        $sid = $this->GenerateStr(10);
+
+        // вставляем SID в БД
+        $now = date('Y-m-d H:i:s'); 
+        $session = array();
+        $session['id_user'] = $id_user;
+        $session['sid'] = $sid;
+        $session['time_start'] = $now;
+        $session['time_last'] = $now;				
+        $this->msql->Insert('sessions', $session); 
+
+        // регистрируем сессию в PHP сессии
+        $_SESSION['sid'] = $sid;				
+
+        // возвращаем SID
+        return $sid;	
+    }
+
 }

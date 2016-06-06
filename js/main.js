@@ -20,6 +20,9 @@ window.onload=function(){
         select2hidden();
     }
 
+
+
+
     reg();
 
 };

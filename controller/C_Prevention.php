@@ -74,7 +74,8 @@ class C_Prevention extends C_Base {
     public function OnOutput() {   	
         //Генерация вложенных шаблонов
         if($this->needStocks && count($this->content['stocks']) > 0){
-            $vars['stocks'] = $this->View('V/view_stocks.php', array('stocks' => $this->content['stocks']));
+            $vars['stocks'] = $this->View('V/view_stocks.php',
+                    array('stocks' => $this->content['stocks'], 'isAdmin' => $this->isAdmin));
         }
         $vars['isAdmin'] = $this->isAdmin;
         $vars['articles'] = $this->content['articles'];

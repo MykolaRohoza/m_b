@@ -22,6 +22,7 @@ abstract class C_Base extends C_Controller {
     protected $galery;
     private  $mUsers;
     private  $mArticles;
+    private  $mImages;
 
 
 
@@ -76,7 +77,8 @@ abstract class C_Base extends C_Controller {
             }
             $this->isAdmin = $this->user['id_role']*1 === 1;
             $this->mArticles = M_Articles::Instance();
-            $this->alts = $this->mArticles->getAlts();
+            $this->mImages = M_Images::Instance();
+            $this->alts = $this->mImages->getAlts();
 
             if($this->needCarosel || $this->isEdit) $this->galery = $this->getImages();
             // для массовой обрезки            

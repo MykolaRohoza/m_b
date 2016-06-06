@@ -49,26 +49,23 @@ class C_Response extends C_Controller{
             }
             /* должны возвращать то что принимают */
             if(isset($_POST['contacts_menu'])){
-                $this->content = $_POST;
-
+                $this->content = $this->saveContact($_POST);
             }
             if(isset($_POST['diagnosis_menu'])){
-                $this->content = $_POST;
-
+                $this->content = $this->saveDiagnosis($_POST);
             }
             if(isset($_POST['role_menu'])){ 
                 if(!is_numeric($_POST['id_role'])){
                     $this->content = [1 => 'Администратор', 2 => 'Тренер', 3 => 'Посетитель'];
-
+                    $this->content = $this->getRoles();
                 }
                 else{                    
                    $arr = [1 => 'Администратор', 2 => 'Тренер', 3 => 'Посетитель'];
                     $this->content = ['id_role' => $arr[$_POST['id_role']]];
+                    $this->content = $this->saveRole($_POST);
                 }
 
             }
-             /* */
-                //$this->content = $_POST;
         }
         
        
@@ -80,9 +77,32 @@ class C_Response extends C_Controller{
         
     }
 
-    
+    private function saveContact($request){
+        $request['id_info'] = $this->mUser->saveContact($request); 
+        $result = $this->mUser->getContact($request);
+        $result['id_user'] = $request['id_user'];
+        return $result;
+    }
+    private function saveDiagnosis($request){
+        $this->mUser->saveDiagnosis($request);
+        $result = $this->mUser->getDiagnosis($request['id_user']);
+        return $result;
+    }
+    private function getRoles(){
+        $result = $this->mUser->getRoles();
+        return $result;
+
+    }
+    private function saveRole($request){
+        $this->mUser->changeUserRole($request);
+        $result = $this->mUser->getRoleByID($request['id_user']);
+        return $result;
+    }
 
     
+
+
+
     private function deleteExercises($id_ex, M_Exercises $mExe){
         $result = $mExe->deleteExercises($id_ex);
         return $result;
@@ -111,7 +131,7 @@ class C_Response extends C_Controller{
 
 }
     public function registrate_test() {
-        $code = md5(date('d-m-Y[H-i]'));
+        $code = md5(time(true));
         $sender = new M_Sender($_POST['login'], $code); 
         $sender->start();
         return $sender->getLog();
