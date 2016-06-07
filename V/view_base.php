@@ -20,15 +20,21 @@
         <script src="/js/jquery-1.10.2.min.js"></script>
         <script src="/js/jquery_ui-1.10.3.min.js"></script>
         <script src="/js/hammer.js"></script>
-        <script src="/js/registration.js"></script>
-        <script src="/js/main.js"></script>
-        <script src="/js/users.js"></script>
-        <script src="/js/holders.js"></script>
-        <script src="/js/edit.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/jquery.fancybox.pack.js"></script>
+        <script src="/js/main.js"></script>
+        <script src="/js/registration.js"></script>
+
+        <?php if($requre['users']):?>
+        <script src="/js/users.js"></script>
+        <?php endif; ?>
+        <?php if($requre['edit']):?>
+        <script src="/js/holders.js"></script>
+        <script src="/js/edit.js"></script>
+        <?php endif; ?>
         <link href="/css/bootstrap.css" rel="stylesheet">
         <link href="/css/jquery.fancybox.css" rel="stylesheet" type="text/css" media="screen">
+        
         <link type="text/css" rel="stylesheet" href="/css/style.css"/>
         <link type="image/x-icon" rel="shortcut icon" href="/images/favicon.ico">
 
@@ -47,7 +53,7 @@
                 <div class="navbar-header">
 
                 </div>
-                <div class="collapse navbar-collapse">
+                <div class="navbar-collapse">
                     <ul class="nav">
                         <li><a href="/" <?=$nav['main'];?> >Главная</a></li>
                         <li><a href="/prevention" <?=$nav['prevention'];?> >Профилактор</a></li> 

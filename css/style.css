@@ -198,18 +198,7 @@ div.image_del span{
 }
 
 
-/*@media (max-width:1200px){
-    .navbar-collapse.collapse{
-        display: none !important;
-    }
-    .collapse.in{
-        display: block !important;
-    }
-    .nav-holder{
-        left:-200px;
-        opacity: 0;
-    }
-}*/
+
 .navbar-toggle{
     display: block;
     left:200px;

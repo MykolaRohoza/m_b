@@ -122,13 +122,11 @@ function navbarCollapse(){
     var $holder = $('div.nav-holder'),
         $nav = $('nav.navbar'),
         $toggle = $('button.navbar-toggle');
-    //holder.hide("slide", { direction: "left" }, 300);
     $toggle.on('click', function (){
         if($holder.is(':hidden')){
             $holder.show("slide", { direction: "left" }, 300);
             $nav.show("slide", { direction: "left" }, 300);
             $toggle.animate({left: 200}, 300);
-            
         }
         else{
             $holder.hide("slide", { direction: "left" }, 300);
