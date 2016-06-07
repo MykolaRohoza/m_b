@@ -1,5 +1,33 @@
+$(function (){
+    $('div.article_list ul').sortable({
+     delay: 250,
+     start: function() {
+         
+     },
+     stop: function() {
+        var pos = getPositions($(this)),
+        query = {
+            'articles_menu':'',
+            'articles_pos':pos
+        },
+        handler = function (){};
+        handler.get_elem = $(this);
+        query_ajax(query, handler);
+    
+    }
+
+    });  
+});
+
 var hdrs = getHolders();
 
+function getPositions($elem){
+    var str_pos = '';
+    $.each($elem.children(), function (key, value){
+        str_pos += '||' + key + $(value).find('b').html();
+    });
+    return str_pos;
+}
 function select2hidden(){
     validateSelects();
     $('select').on('change', function(){

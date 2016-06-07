@@ -99,7 +99,7 @@
                     <div class="add_article"><?php //var_dump(microtime(true)); var_dump( date('d.m.Y - [H:m:s]',microtime(true)));?></div>
                     <ul>
                    <?php foreach ($article_list as $article) :?>
-                        <li><a href="/edit/<?=$article['id_article']?>"><b>№<?=$article['id_article']?></b> <?=$article['article_title']?></a></li>
+                        <li><a href="/edit/<?=$article['id_article']?>"><b>#<?=$article['id_article']?></b> <?=$article['article_title']?></a></li>
                     <?php endforeach; ?>
                     </ul>
                 </div>

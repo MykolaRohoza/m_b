@@ -233,39 +233,7 @@ function  input2span(elem, response, id, content, container, index){
 }
 
 
-function query_ajax(obj, handler){
-    var query  = '';
-    $.each(obj, function (key, value){
-        if(query.length !== 0) query += '&';
-        query += key + '=' + value;
-    });
-    $.ajax({
-        type: 'POST',
-        url: '/resp/' + query,
-        data: query,
-        beforeSend: function (){
-            if(handler.get_elem){
-                handler.get_elem.css('cursor', 'progress');
-                handler.get_elem.attr('disabled', 'disabled');
-            }
-            
-        },
-        success: function(data){
-            //console.log(data);
-            var result = JSON.parse(data);
-            if(result) {
-                handler.get_elem.css('cursor', 'auto');
-                handler.get_elem.removeAttr('disabled');
-                handler(result);
-            }
-            else{
 
-            }
-
-
-        }
-    }); 
-}
 
 function  new_contact(elem){   
     addChangeble('20%', '', 'contacts_menu', 'id_info', 'contact', '', $(elem).parent(), 0);

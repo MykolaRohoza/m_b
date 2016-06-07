@@ -155,18 +155,7 @@ footer{
     text-align: left;
     opacity: 1;
 }
-.navbar-toggle[aria-expanded="true"]+div{
-    animation-duration: 0.1s;
-    transition-timing-function: ease;
-    animation-fill-mode: forwards;
-    animation-name: drop_in;
-}
-.navbar-toggle[aria-expanded="true"]{
-    animation-duration: 0.1s;
-    transition-timing-function: ease;
-    animation-fill-mode: forwards;
-    animation-name: drop_in1;    
-}
+
 .design{
     padding: 10px;
 }
@@ -209,7 +198,7 @@ div.image_del span{
 }
 
 
-@media (max-width:1200px){
+/*@media (max-width:1200px){
     .navbar-collapse.collapse{
         display: none !important;
     }
@@ -220,9 +209,10 @@ div.image_del span{
         left:-200px;
         opacity: 0;
     }
-    .navbar-toggle{
-        display: block;
-    }
+}*/
+.navbar-toggle{
+    display: block;
+    left:200px;
 }
 
 

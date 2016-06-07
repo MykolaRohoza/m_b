@@ -23,7 +23,6 @@
         <script src="/js/registration.js"></script>
         <script src="/js/main.js"></script>
         <script src="/js/users.js"></script>
-        <script src="/js/new_user.js"></script>
         <script src="/js/holders.js"></script>
         <script src="/js/edit.js"></script>
         <script src="/js/bootstrap.min.js"></script>
@@ -31,14 +30,13 @@
         <link href="/css/bootstrap.css" rel="stylesheet">
         <link href="/css/jquery.fancybox.css" rel="stylesheet" type="text/css" media="screen">
         <link type="text/css" rel="stylesheet" href="/css/style.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/jquery_confirm.css"/>
         <link type="image/x-icon" rel="shortcut icon" href="/images/favicon.ico">
 
         <title>Mind-Body Харьков</title>
     </head>
     <body>
         
-        <button type="button" class="navbar-toggle collapsed button-nav" data-toggle="collapse" data-target="#bs-example-navbar-collapse">
+        <button type="button" class="navbar-toggle button-nav" data-toggle="collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -49,7 +47,7 @@
                 <div class="navbar-header">
 
                 </div>
-                <div class="collapse navbar-collapse " id="bs-example-navbar-collapse">
+                <div class="collapse navbar-collapse">
                     <ul class="nav">
                         <li><a href="/" <?=$nav['main'];?> >Главная</a></li>
                         <li><a href="/prevention" <?=$nav['prevention'];?> >Профилактор</a></li> 

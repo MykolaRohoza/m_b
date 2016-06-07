@@ -74,6 +74,11 @@ class C_Response extends C_Controller{
             if(isset($_POST['image_menu'])){ 
                 $this->content = $this->setUserImage($_POST);
             }
+            if(isset($_POST['articles_menu'])){ 
+                //M_Lib::addLog($_POST);
+                $mArticles = M_Articles::Instance();
+                $this->content = $mArticles->setArticlesPosition($_POST['articles_pos']);
+            }
         }
         
        

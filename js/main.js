@@ -20,6 +20,7 @@ window.onload=function(){
         select2hidden();
     }
     reg();
+    navbarCollapse();
 
 };
 
@@ -63,8 +64,52 @@ function swipe(arr){
     });
 
 }
+/*
+ * 
+ * @param obj - массив для передачи данных $POST
+ * @param function handler - функция будет вызвана по резудьтату
+ * @param handler.get_elem - при наличии данного свойства перед отправкой на 
+ * данный элемент будет поставлено - недоступен + измениться курсор по успеху вернет обратно
+ * 
+ */
+function query_ajax(obj, handler){
+    var query  = '';
+    $.each(obj, function (key, value){
+        if(query.length !== 0) query += '&';
+        query += key + '=' + value;
+    });
+    $.ajax({
+        type: 'POST',
+        url: '/resp/' + query,
+        data: query,
+        beforeSend: function (){
+            if(handler.get_elem){
+                handler.get_elem.css('cursor', 'progress');
+                handler.get_elem.attr('disabled', 'disabled');
+            }
+            
+        },
+        success: function(data){
+            //console.log(data);
+            var result = JSON.parse(data);
+            if(result) {
+                handler.get_elem.css('cursor', 'auto');
+                handler.get_elem.removeAttr('disabled');
+                handler(result);
+            }
+            else{
+
+            }
 
 
+        },
+        error: function(){
+            handler.get_elem.css('cursor', 'auto');
+            handler.get_elem.removeAttr('disabled');
+ 
+        }
+    }); 
+}
 
 
 
@@ -74,7 +119,25 @@ function swipe(arr){
  *
 */
 function navbarCollapse(){
-
+    var $holder = $('div.nav-holder'),
+        $nav = $('nav.navbar'),
+        $toggle = $('button.navbar-toggle');
+    //holder.hide("slide", { direction: "left" }, 300);
+    $toggle.on('click', function (){
+        if($holder.is(':hidden')){
+            $holder.show("slide", { direction: "left" }, 300);
+            $nav.show("slide", { direction: "left" }, 300);
+            $toggle.animate({left: 200}, 300);
+            
+        }
+        else{
+            $holder.hide("slide", { direction: "left" }, 300);
+            $nav.hide("slide", { direction: "left" }, 300);
+            $toggle.animate({left: 0}, 300);
+            
+        }
+    });
+    
 
 }
 function removeElem(elem){

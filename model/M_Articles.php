@@ -62,7 +62,7 @@ class M_Articles
             else{
                 $start = ($page - 1)*$onPage;
             }
-            $query  .= "ORDER BY id_article DESC LIMIT $start, $onPage";
+            $query  .= "ORDER BY article_pos LIMIT $start, $onPage";
 
         }
 
@@ -88,14 +88,26 @@ class M_Articles
         return $this->getArticlesFull($article_func, $id_article, $article_dest, $page, $onPage, $lang);
     }
     public function getArticlesNames($lang='ru'){
-        $query  = "SELECT id_article, article_title_$lang FROM articles ORDER BY id_article DESC";
+        $query  = "SELECT id_article, article_title_$lang FROM articles ORDER BY article_pos";
         $result = $this->msql->Select($query);
         $articles = $this->validateArtCont($result, $lang);
-                //M_Lib::addLog($result);
+
         return $articles;
     }
 
 
+    public function setArticlesPosition($articles_pos){
+        $artPosArr = explode("||", $articles_pos);
+        $table = 'articles';
+        $sum  = 0;
+        for($i = 0; $i < count($artPosArr) - 1; $i++) {
+            if($artPosArr[$i]){
+                $val = explode("#", $artPosArr[$i]);
+                $sum +=  $this->msql->Update($table, array('article_pos'=>$val[0]), "id_article='{$val[1]}'");
+            }
+        }
+        return ($sum > 0);
+    }
 
     
     
