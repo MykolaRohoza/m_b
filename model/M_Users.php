@@ -425,13 +425,16 @@ private function GetSid(){
         return $code;
     }
 
-    public function getUsers($roles = 0, $id_user = 0){
+    public function getUsers($roles = 0, $id_user = 0, $where_corr = null){
         $query = "SELECT u.id_user, u.login, u.user_name, u.user_second_name, u.id_role, u.exercises, u.diagnosis, "
                 . "r.description, c_i.contact, c_i.id_info, c_i.contact_dest, d.display_description, u.user_image, "
                 . "i.image_alt "
                 . "FROM users u LEFT JOIN roles r USING(id_role) LEFT JOIN contact_infos c_i "
                 . "ON c_i.contact_info=u.id_user LEFT JOIN displays d ON d.id_display=u.display "
                 . "LEFT JOIN images i ON i.image_name=u.user_image  WHERE 1=1 ";
+        if($where_corr){
+            $query.= $where_corr;
+        }
         $pr_key = 'id_user';
         $container = 'contacts';
         $unique_columns = array('contact', 'id_info', 'contact_dest');
@@ -450,6 +453,7 @@ private function GetSid(){
 
             $result[$key]['exercises'] = $this->validateExercises($value['exercises']);
         }
+       
 
 
         return $result;

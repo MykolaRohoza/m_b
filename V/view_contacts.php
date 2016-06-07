@@ -3,30 +3,37 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-8">
+                <?php if($users):?> 
+
                 <ul class="contacts">
+                <?php foreach ($users as $user):?> 
+                    
+                    
+                    
                     <li class="clearfix">
-                        <img class="photo" src="" alt="">
+                        <?php if($user['user_image']):?>
+                        <img class="photo" src="<?=$user['user_image'];?>" alt="<?=$user['image_alt'];?>">
+                        <?php endif;?>
                         <div>
-                            <h4>Алина Бережная</h4>
-<!--                            <ul>
-                                <li>Mail</li>
-                                <li>Skype</li>
-                                <li>Telephone</li>
-                            </ul>-->
+                        <h4>
+                            <span><?=$user['user_name']?></span>
+                            <span> </span>
+                            <span><?=$user['user_second_name']?></span>
+                            <span> - </span>
+                            <span><?=$user['description']?></span>
+                        </h4>
+                            <?php if(!$user['contacts']):?>
+                            <ul>
+                            <?php foreach($user['contacts'] as $contact):?>
+                                <li><?=$contact['contact'];?></li>
+                            <?php endforeach;?>
+                            </ul>
+                            <?php endif;?>
                         </div>
                     </li>
-                    <li class="clearfix">
-                        <img class="photo" src="http://fi/images/carousel/Raketa_s_myachem.JPG" alt="">
-                        <div>
-                            <h4>Виолета Бережная</h4>
-<!--                            <ul>
-                                <li>Mail</li>
-                                <li>Skype</li>
-                                <li>Telephone</li>
-                            </ul>-->
-                        </div>
-                    </li>
+                    <?php endforeach;?>
                 </ul>
+                <?php endif;?>    
                 <div class="google-map">
                     <p>Адрес центра: Харьков, ул. Пушкинская,5 (во дворе, вход через арку)
 тел. 096-83-66-709, 050-64-85-055, 093-640-57-70.</p>

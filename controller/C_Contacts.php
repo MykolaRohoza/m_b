@@ -64,7 +64,7 @@ class C_Contacts extends C_Base{
             $this->metaTags['og:title'] = 'Центр Mind Body - профилактор Евминова';
             $this->metaTags['og:type'] = "Contacts";
 
-        
+            $this->content['users'] = $this->mUsers->getUsers(0, 0, "AND u.display<>1");
              
 
         }
@@ -77,11 +77,9 @@ class C_Contacts extends C_Base{
     public function OnOutput() {   	
 
         //Генерация вложенных шаблонов
-        if($this->needStocks && count($this->content['stocks']) > 0){
-            $vars['stocks'] = $this->View('V/view_stocks.php',
-                    array('stocks' => $this->content['stocks'], 'isAdmin' => $this->isAdmin));
-        }
-        $this->content['container_main'] = $this->View('V/view_contacts.php');
+
+        $this->content['container_main'] = $this->View('V/view_contacts.php', $this->content);
+        
         parent::OnOutput();
         
         
