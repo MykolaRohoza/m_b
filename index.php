@@ -60,6 +60,9 @@ M_startup();
             case('del') : 
                 $controller = new C_Del();
                 break;
+            case('office') : 
+                $controller = new C_Office();
+                break;
             default : $controller = new C_Main();
 	}
 

@@ -69,10 +69,24 @@
                     <div class="del_user">
                         <a href="../del/<?=$id_user?>"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                     </div>
+
                     <div class="more">
                         <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
                     </div>
-                    <img class="photo" src="<?='http://' . $_SERVER['SERVER_NAME'] . '/images/carousel/' . $user['article_img_name']?>" alt="<?=$user['image_alt']?>">
+                    <?php if($user['user_image']):?>
+                    <div class="photo">
+                        <img class="photo" src="<?=$user['user_image']?>" alt="<?=$user['image_alt']?>">
+<!--                        'http://' . $_SERVER['SERVER_NAME'] . '/images/carousel/' . -->
+                        <div class="img_del">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <?php endif;?>
+                    <?php if(!$user['user_image']):?>
+                    <div class="insert_photo">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </div>
+                    <?php endif;?>
                     <h4>
                         <span><?=$user['user_name']?></span>
                         <span> </span>
@@ -80,6 +94,7 @@
                         <span> - </span>
                         <span ondblclick="span2changeble(this)"><?=$user['description']?></span>
                     </h4>
+
                     <h4>
                         <span ondblclick="new_contact(this)">Контакты: </span>
                         <?php $i = 0; foreach($user['contacts'] as $contact){
@@ -121,6 +136,7 @@
 
                         <?php endforeach;?>
                         </div>
+
                         <form class="exercises">
                             <input type="hidden" value="<?=$id_user?>" name="id_user">
                             <textarea style="display:none" name="exercises"></textarea>
@@ -128,6 +144,10 @@
 <!--                            <input type="button" class="btn btn-primary btn-block save" name="cansel" value="Отменить">-->
                         </form>
                     </div>
+                    <h4>
+                        <span>Отображение в контактах : </span> 
+                        <span  ondblclick="span2changeble(this, true)"><?=$user['display_description']?></span><span>.</span>
+                    </h4>
                 </div> 
 
 

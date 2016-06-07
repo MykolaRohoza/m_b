@@ -186,31 +186,30 @@ footer{
     width: 200px;
     margin-right: 20px;
 }
-
-@keyframes drop_in{
-    0%{
-        left:-200px;
-        opacity: 0;
-    }
-    100%{
-        left:0;
-        opacity: 1;
-    }
+div.photo{
+    width: 200px;
+    position: relative;
 }
-@keyframes drop_in{
-    0%{
-        left:0px;
-    }
-    100%{
-        left:200px;
-    }
+div.img_del{
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+    background: #ce8483;
+    position: absolute;
+    border-radius: 3px; 
+    
+    margin-top: 5px; 
+    right: 5px;
+    bottom: 5px;
+    cursor: pointer; 
+}
+div.image_del span{
+    text-align: center;
+    color: #333;
 }
 
 
 @media (max-width:1200px){
-    .navbar-toggle{
-        display: block;
-    }
     .navbar-collapse.collapse{
         display: none !important;
     }
@@ -220,6 +219,9 @@ footer{
     .nav-holder{
         left:-200px;
         opacity: 0;
+    }
+    .navbar-toggle{
+        display: block;
     }
 }
 
@@ -464,6 +466,23 @@ div.more span{
     cursor: pointer;
 }
 .del_user span{
+    text-align: center;
+    color: #333;
+}
+.insert_photo{
+    width: 30px;
+    height: 30px;
+    padding: 6px 8px;
+    background: #67b168;
+
+    border-radius: 3px; 
+    
+    margin-top: 5px; 
+    right: 2px;
+    top: 3px;
+    cursor: pointer;
+}
+.insert_photo span{
     text-align: center;
     color: #333;
 }

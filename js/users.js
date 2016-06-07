@@ -1,17 +1,19 @@
 $(function() {
-    $('.full_container').hide();
-    $('.exercises_container').sortable({
-        delay: 250,
-        start: function() {
-        },
-        stop: function() {
-            
-        }
+    if($('#pusher').length) {
+        $('.full_container').hide();
+        $('.exercises_container').sortable({
+            delay: 250,
+            start: function() {
+            },
+            stop: function() {
 
-});  
+            }
+
+        });  
+        setDraggable(); 
  
+    }
 
-    setDraggable(); 
     $('input[name="add_ex"]').on('click', function (){
         var ex_name = $('input[name="new_ex"]').val().trim();
         addNewEx(ex_name);
@@ -25,9 +27,57 @@ $(function() {
         show_users_info($(this));
 
     });
+    $('div.insert_photo').on('click', function (){
+        setUserImage($(this));
+    });
+    $('div.img_del').on('click', function (){
+        delUserImage($(this));
+    });
+
 
 });
 
+
+function setUserImage($elem){ 
+    var id = getIdUserByElem($($elem.children()[0])),
+        $active_img = $('div.active img'),
+        src = $active_img.attr('src'),
+        alt = $active_img.attr('alt'),
+        handler = function (){
+            $('       <div class="photo" >'
+                    + '     <img class="photo" src="' + src + '" alt="'+ alt + '">'
+                    + '     <div class="img_del">'
+                    + '         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'
+                    + '    </div>'
+                    + '</div>'
+                    ).insertAfter($elem);
+            $('div.img_del').on('click', function (){
+                delUserImage($(this));
+            });
+           $elem.remove();
+        },
+        query = {'id_user': id, 'user_image':src, 'image_menu':''};
+        handler.get_elem = $elem;
+        query_ajax(query, handler);
+    
+}
+function delUserImage($elem){ 
+    var id = getIdUserByElem($elem),
+        $container = $elem.parent(),    
+        handler = function (){ 
+        $('    <div class="insert_photo">'
+            + '     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'
+            + '</div>').insertAfter($container);
+        $('div.insert_photo').on('click', function (){
+            setUserImage($(this));
+        });
+        $container.remove();
+    },
+    query = {'id_user': id, 'user_image':'', 'image_menu':''};
+
+    handler.get_elem = $elem;
+    query_ajax(query, handler);
+}
 
 function tie($elem, goHome){ 
     var $pusher = $('#pusher'),
@@ -49,9 +99,8 @@ function  span2changeble(elem){
         data = getDataNames(elem); 
     $span.remove();
     addChangeble(width, content, data['data_name'], data['id_data'],
-        data['data_cont'], id, container, index, data['data_cont'] === 'id_role');
-    
-    container.siblings('div.full_container').slideDown('fast');
+        data['data_cont'], id, container, index, (data['data_cont'] === 'id_role' || data['data_cont'] ===  'id_display'));
+
 }
 function getDataNames(elem){
     var $elem = $(elem),
@@ -68,7 +117,11 @@ function getDataNames(elem){
         
         {'data_name' : 'diagnosis_menu',
         'id_data' : '',
-        'data_cont' : 'diagnosis'}
+        'data_cont' : 'diagnosis'},
+        
+        {'data_name' : 'display_menu',
+        'id_data' : '',
+        'data_cont' : 'id_display'}
     ];
     
     return dataNamesHolder[index];
@@ -116,7 +169,7 @@ function addChangeble(width, content, data_name, id_data, data_cont, id, contain
     
     $new_elem.width(width + 10);
     if($new_elem[0].tagName.toLowerCase() === 'select'){
-        $new_elem.bind('change', function(){
+        $new_elem.bind('change blur', function(){
             save_($(this), data_name, id_data, data_cont, id, handler); 
         });
     }
@@ -149,7 +202,7 @@ function save_ (elem, data_name, id_data, data_cont, id, handler){
 function  input2span(elem, response, id, content, container, index){
     
     elem.remove();
-    if(response[content].length > 0) {
+    if(response[content] != null && response[content].trim().length > 0) {
         var elem_id;
         if(response[id]){
             elem_id =  'id="' + response[id] + '_' + response[content].replace(/\s/g, '') + '"';
@@ -198,6 +251,7 @@ function query_ajax(obj, handler){
             
         },
         success: function(data){
+            //console.log(data);
             var result = JSON.parse(data);
             if(result) {
                 handler.get_elem.css('cursor', 'auto');
@@ -218,10 +272,13 @@ function  new_contact(elem){
 
 }
 function  new_diagnosis(elem){
-    addChangeble('20%', '', 'diagnosis_menu', '', 'diagnosis', '', $(elem).parent(), 0);
+    if(!$(elem).siblings('span').length){
+        addChangeble('20%', '', 'diagnosis_menu', '', 'diagnosis', '', $(elem).parent(), 0);
+    }
 }
 
 function getIdUserByElem(elem){
+   
     return elem.parent().siblings('div.full_container').children('form').children('input[name="id_user"]').val();
 }
 function  show_users_info(elem){

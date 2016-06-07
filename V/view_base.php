@@ -109,7 +109,7 @@
                     <div class="col-sm-5">
                         <div class="logout <?=$user['logout_collapse']?>">
                             <span class="login-name"><?=$user['user_name']?></span>
-                            <a href="#">Личный кабинет</a>
+                            <a href="/office">Личный кабинет</a>
                             <form method="post"><input type="submit" class="btn btn-primary btn-block" name="logout" value='Выйти'></form>
                         </div>
                         <form method="post" class="login-form <?=$user['login_collapse']?>">

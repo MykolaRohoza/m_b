@@ -427,9 +427,11 @@ private function GetSid(){
 
     public function getUsers($roles = 0, $id_user = 0){
         $query = "SELECT u.id_user, u.login, u.user_name, u.user_second_name, u.id_role, u.exercises, u.diagnosis, "
-                . "r.description, c_i.contact, c_i.id_info, c_i.contact_dest "
+                . "r.description, c_i.contact, c_i.id_info, c_i.contact_dest, d.display_description, u.user_image, "
+                . "i.image_alt "
                 . "FROM users u LEFT JOIN roles r USING(id_role) LEFT JOIN contact_infos c_i "
-                . "ON c_i.contact_info=u.id_user WHERE 1=1 ";
+                . "ON c_i.contact_info=u.id_user LEFT JOIN displays d ON d.id_display=u.display "
+                . "LEFT JOIN images i ON i.image_name=u.user_image  WHERE 1=1 ";
         $pr_key = 'id_user';
         $container = 'contacts';
         $unique_columns = array('contact', 'id_info', 'contact_dest');
@@ -454,12 +456,16 @@ private function GetSid(){
      
     }
  
-    public function getRoles($id_user = 0){
+    
+    public function setUserImage($id_user, $user_image){
+        $tmp = "id_user='%d'";
+        $where = sprintf($tmp, $id_user);
+        $object = array('user_image' => $user_image);
+        $result = $this->msql->Update('users', $object, $where, true, true);
+        return $result;
+    }
+    public function getRoles(){
         $query = "SELECT id_role, description FROM roles";
-        if($id_user){
-            $query .= " WHERE id_user='%d'";  
-            $query = sprintf($query, mysql_real_escape_string($id_user));
-        }
         $result = $this->msql->Select($query);
         $roles = array();
         foreach ($result as $value) {
@@ -467,6 +473,7 @@ private function GetSid(){
         }
         return $roles;
     }
+
     public function getRoleByID($id_user){
         $t = "SELECT u.id_user, r.id_role, r.description FROM users u LEFT JOIN roles r USING(id_role) "
                 . "WHERE u.id_user='%d'";
@@ -475,6 +482,39 @@ private function GetSid(){
         $roles = array('id_role'  => $result[0]['description']);
         return $roles;
     }
+
+    public function changeUserRole($request){
+        $tmp = "id_user='%d'";
+        $where = sprintf($tmp, $request['id_user']);
+        $object = array('id_role' => $request['id_role']);
+        $result = $this->msql->Update('users', $object, $where);
+        return $result;
+    }
+    public function changeDispVars($request){
+        $tmp = "id_user='%d'";
+        $where = sprintf($tmp, $request['id_user']);
+        $object = array('display' => $request['id_display']);
+        $result = $this->msql->Update('users', $object, $where);
+        return $result;
+    }
+    public function getDispVars(){
+        $query = "SELECT id_display, display_description FROM displays";
+        $result = $this->msql->Select($query);
+        $displays = array();
+        foreach ($result as $value) {
+            $displays[$value['id_display']] = $value['display_description'];
+        }
+        return $displays;
+    }
+    public function getDispVarsByID($id_user){
+        $t = "SELECT u.id_user, u.display, d.id_display, d.display_description FROM users u LEFT JOIN displays d "
+                . "ON u.display=d.id_display WHERE u.id_user='%d'";
+        $query = sprintf($t, mysql_real_escape_string($id_user));
+        $result = $this->msql->Select($query);
+        $roles = array('id_display'  => $result[0]['display_description']);
+        return $roles;
+    }
+    
     public function getDiagnosis($id_user){
         $t = "SELECT id_user, diagnosis FROM users WHERE id_user='%d'";
         $query = sprintf($t, mysql_real_escape_string($id_user));
@@ -497,9 +537,14 @@ private function GetSid(){
         else{   
             $tmp = "id_info='%d'";
             $where = sprintf($tmp, $request['id_info']);
-            $object = array('contact' => $request['contact']);
-            $this->msql->Update('contact_infos', $object, $where);
-            $result = $request['id_info'];
+            if($request['contact'] && trim($request['contact'])){
+                $object = array('contact' => $request['contact']);
+                $this->msql->Update('contact_infos', $object, $where);
+                $result = $request['id_info'];
+            }
+            else{
+                $this->msql->Del('contact_infos', $where);
+            }
         }
         return $result;
     }
@@ -509,13 +554,6 @@ private function GetSid(){
         $result = $this->msql->Select($query);
         $contact = array('id_info' => $result[0]['id_info'], 'contact'  => $result[0]['contact']);
         return $contact;
-    }
-    public function changeUserRole($request){
-        $tmp = "id_user='%d'";
-        $where = sprintf($tmp, $request['id_user']);
-        $object = array('id_role' => $request['id_role']);
-        $result = $this->msql->Update('users', $object, $where);
-        return $result;
     }
 
     

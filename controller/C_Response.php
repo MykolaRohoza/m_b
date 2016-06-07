@@ -56,15 +56,23 @@ class C_Response extends C_Controller{
             }
             if(isset($_POST['role_menu'])){ 
                 if(!is_numeric($_POST['id_role'])){
-                    $this->content = [1 => 'Администратор', 2 => 'Тренер', 3 => 'Посетитель'];
                     $this->content = $this->getRoles();
                 }
                 else{                    
-                   $arr = [1 => 'Администратор', 2 => 'Тренер', 3 => 'Посетитель'];
-                    $this->content = ['id_role' => $arr[$_POST['id_role']]];
                     $this->content = $this->saveRole($_POST);
                 }
 
+            }
+            if(isset($_POST['display_menu'])){ 
+                if(!is_numeric($_POST['id_display'])){
+                    $this->content = $this->getDispVars();
+                }
+                else{                    
+                    $this->content = $this->saveDispVars($_POST);
+                }
+            }
+            if(isset($_POST['image_menu'])){ 
+                $this->content = $this->setUserImage($_POST);
             }
         }
         
@@ -83,6 +91,11 @@ class C_Response extends C_Controller{
         $result['id_user'] = $request['id_user'];
         return $result;
     }
+    private function setUserImage($request){
+
+        $result = $this->mUser->setUserImage($request['id_user'], $request['user_image']); 
+        return $result;
+    }
     private function saveDiagnosis($request){
         $this->mUser->saveDiagnosis($request);
         $result = $this->mUser->getDiagnosis($request['id_user']);
@@ -96,6 +109,16 @@ class C_Response extends C_Controller{
     private function saveRole($request){
         $this->mUser->changeUserRole($request);
         $result = $this->mUser->getRoleByID($request['id_user']);
+        return $result;
+    }
+    private function getDispVars(){
+        $result = $this->mUser->getDispVars();
+        return $result;
+
+    }
+    private function saveDispVars($request){   
+        $this->mUser->changeDispVars($request);
+        $result = $this->mUser->getDispVarsByID($request['id_user']);
         return $result;
     }
 
