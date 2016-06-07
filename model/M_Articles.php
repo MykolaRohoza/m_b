@@ -100,7 +100,7 @@ class M_Articles
         $artPosArr = explode("||", $articles_pos);
         $table = 'articles';
         $sum  = 0;
-        for($i = 0; $i < count($artPosArr) - 1; $i++) {
+        for($i = 0; $i < count($artPosArr); $i++) {
             if($artPosArr[$i]){
                 $val = explode("#", $artPosArr[$i]);
                 $sum +=  $this->msql->Update($table, array('article_pos'=>$val[0]), "id_article='{$val[1]}'");

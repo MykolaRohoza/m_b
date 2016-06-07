@@ -49,6 +49,7 @@ class C_Prevention extends C_Base {
             }
             // сбор разрешений и организация массивов
             $this->content['nav']['prevention'] = 'class="active"'; 
+            $this->content['title'] = "Профилактор Евминова";
             $mArticles = M_Articles::Instance();
             $this->content['articles'] = $mArticles->getArticles(2, 0, 2);
             

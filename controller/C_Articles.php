@@ -47,6 +47,8 @@ class C_Articles extends C_Base {
             }
             // сбор разрешений и организация массивов
             $this->content['nav']['articles'] = 'class="active"';
+            $this->content['title'] = 'Здоровая спина';
+            
             $mArticles = M_Articles::Instance();
             $this->content['articles'] = $mArticles->getArticles(2, 0, 3);
             

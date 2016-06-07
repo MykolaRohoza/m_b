@@ -18,6 +18,7 @@ abstract class C_Base extends C_Controller {
     protected $contentNeed;
     protected $alts;
     protected $isEdit;
+
     private $start_time; // время начала генерации страницы
     protected $galery;
     private  $mUsers;
@@ -148,11 +149,13 @@ abstract class C_Base extends C_Controller {
 
 
         // Основной шаблон всех страниц.
-
+        if(!$this->content['title']){
+            $this->content['title'] ='Mind-Body Харьков';
+        }
         $vars = array('container_main' => $this->content['container_main'], 'nav' => $this->content['nav'],
             'images' => $this->galery, 'metaTags' => $this->metaTags, 'user' => $this->user, 
             'needCarosel' => $this->needCarosel, 'needLoginForm' => $this->needLoginForm,
-            'isAdmin' => $this->isAdmin
+            'isAdmin' => $this->isAdmin, 'require' => $this->content['require'], 'title'=>$this->content['title']
 );
         $page = $this->View('V/view_base.php', $vars);
 

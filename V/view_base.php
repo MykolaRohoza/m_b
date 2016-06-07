@@ -18,17 +18,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script src="/js/jquery-1.10.2.min.js"></script>
+        
+        <?php if($require['ui']):?>
         <script src="/js/jquery_ui-1.10.3.min.js"></script>
+        <?php endif; ?>
+        
         <script src="/js/hammer.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/jquery.fancybox.pack.js"></script>
         <script src="/js/main.js"></script>
         <script src="/js/registration.js"></script>
 
-        <?php if($requre['users']):?>
+        <?php if($require['users']):?>
         <script src="/js/users.js"></script>
         <?php endif; ?>
-        <?php if($requre['edit']):?>
+        <?php if($require['edit']):?>
         <script src="/js/holders.js"></script>
         <script src="/js/edit.js"></script>
         <?php endif; ?>
@@ -38,7 +42,7 @@
         <link type="text/css" rel="stylesheet" href="/css/style.css"/>
         <link type="image/x-icon" rel="shortcut icon" href="/images/favicon.ico">
 
-        <title>Mind-Body Харьков</title>
+        <title><?=$title;?></title>
     </head>
     <body>
         

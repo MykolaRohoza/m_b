@@ -68,6 +68,8 @@ class C_Users extends C_Base {
             $this->content['users'] = $this->getUsersByRoles($roles);
             $mExe = M_Exercises::Instance();
             $this->content['exercises'] = $this->getExercises($mExe);
+            $this->content['require']['users'] = true;
+            $this->content['require']['ui'] = true;
         }
                 
         

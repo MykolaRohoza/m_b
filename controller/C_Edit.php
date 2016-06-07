@@ -81,6 +81,9 @@ class C_Edit extends C_Base{
             }
             // сбор разрешений и организация массивов
             $this->content['nav']['edit'] = 'class="active"';
+            $this->content['require']['edit'] = true;
+            $this->content['require']['ui'] = true;
+            
             if(isset($this->_get[1]) && $this->_get[1] > 0){
                 $temp_arr = $this->mArticles->getArticles(0, $this->_get[1]);
                 $this->content['articles'] = $temp_arr[0];

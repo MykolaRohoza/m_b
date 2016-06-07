@@ -38,6 +38,7 @@ class C_Office extends C_Base {
             }
             // сбор разрешений и организация массивов
             $this->content['users'] = $this->mUsers->getUsers(0, $this->user['id_user']);
+            $this->content['require']['users'] = true;
         
          
              

@@ -5,7 +5,7 @@
         <div class="col-sm-8">
             <h1>Оздоровительный центр MIND-BODY Харьков</h1>
             <?php if($isAdmin):?>
-                <a href="#" class=" edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                <!--<a href="#" class=" edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>-->
             <?php endif;?>
             <div class="article article-left clearfix">
                 <h3>Наш Центр занимается профилактикой и лечением проблем :</h3>
