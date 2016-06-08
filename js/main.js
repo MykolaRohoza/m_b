@@ -21,10 +21,32 @@ window.onload=function(){
     }
     reg();
     navbarCollapse();
+   avbarLife();
 
 };
 
-
+function  navbarLife(){
+    $('.nav > li > a ').on('mouseenter', function (){
+        $(this).animate({
+            borderColor:"#000",
+            borderRadius: '10px',
+            color:'#6C7B8B',
+            backgroundColor:'#EEE'
+            
+        }, 300);
+    });
+    $('.nav > li > a ').on('mouseleave', function (){
+        var bgColor = ($(this).is('a.active'))?'#CAE1FF':"transparent",
+        tColor = ($(this).is('a.active'))?'#6C7B8B':'#FFF';
+ 
+        $(this).animate({
+            borderColor:"transparent",
+            borderRadius: '0px',
+            color: tColor,
+            backgroundColor: bgColor
+        }, 300);
+    });
+}
 
 /**
  * показать/спрятать акции 
@@ -90,7 +112,7 @@ function query_ajax(obj, handler){
             
         },
         success: function(data){
-            console.log(data);
+            //console.log(data);
             var result = JSON.parse(data);
                 handler.get_elem.css('cursor', 'auto');
                 handler.get_elem.removeAttr('disabled');
@@ -115,7 +137,7 @@ function query_ajax(obj, handler){
 
 /**
  * 
- * прячет навбар при вызове
+ * прячет навбар от кнопки
  *
 */
 function navbarCollapse(){

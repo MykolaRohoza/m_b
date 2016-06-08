@@ -38,10 +38,12 @@ nav.navbar{
 }
 .nav>li>a:hover, .nav>li>a:focus{
     color: #6C7B8B;
+    background-color: transparent;
     
 }
 .nav>li>a{
     border: 2px solid transparent;
+    
     
 }
 .nav a.active{
