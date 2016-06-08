@@ -11,7 +11,7 @@
             <div class="carousel-inner" role="listbox">
                 <?php for($i = 0; $i < count($images); $i++): ?>
                     <div class="item <?php if($i==0) {echo 'active';} ?>">
-                        <img src="<?=$images[$i]['path'];?>" alt="<?=$images[$i]['alt'];?>" onclick="put(this)">
+                        <img src="<?=$images[$i]['path'];?>" alt="<?=$images[$i]['alt'];?>">
                     </div>
                 <?php endfor; ?>
 

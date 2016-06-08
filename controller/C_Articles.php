@@ -19,6 +19,7 @@ class C_Articles extends C_Base {
         $this->mUsers = M_Users::Instance();
         $this->needLogin = false;
     	$this->needTimeTest = true;
+        $this->controllerPath = 'articles/';
     }
 
 
@@ -50,7 +51,14 @@ class C_Articles extends C_Base {
             $this->content['title'] = 'Здоровая спина';
             
             $mArticles = M_Articles::Instance();
-            $this->content['articles'] = $mArticles->getArticles(2, 0, 3);
+            $articlesCount = $mArticles->getArticlesCount(2, 0, 3);
+            $this->content['articles'] = $mArticles->getArticles(2, 0, 3, $this->_get[1]);
+            if($articlesCount > 5){
+                $path = $this->server . '/' . $this->controllerPath;
+                $this->content['pageNav'] = $mArticles->getPageNavigation($this->_get[1], $articlesCount, $path, 5);
+                
+                 
+            }
             
             
             $this->metaTags['keywords'] = 'Шняга, Харьков, профилактор Евминова, лечение и профилактика заболеваний позвоночника';
@@ -75,13 +83,15 @@ class C_Articles extends C_Base {
     public function OnOutput() {   	
 
         //Генерация вложенных шаблонов
+        if($this->content['count'] > 5){
+            
+        }
         if($this->needStocks && count($this->content['stocks']) > 0){
-            $vars['stocks'] = $this->View('V/view_stocks.php',
+            $this->content['stocks'] = $this->View('V/view_stocks.php',
                     array('stocks' => $this->content['stocks'], 'isAdmin' => $this->isAdmin));
         }
-        $vars['isAdmin'] = $this->isAdmin;
-        $vars['articles'] = $this->content['articles'];
-        $this->content['container_main'] = $this->View('V/view_prevention.php', $vars);
+        $this->content['isAdmin'] = $this->isAdmin;
+        $this->content['container_main'] = $this->View('V/view_prevention.php', $this->content);
         parent::OnOutput();
              
     }         

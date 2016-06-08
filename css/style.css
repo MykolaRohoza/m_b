@@ -472,6 +472,27 @@ div.more span{
     text-align: center;
     color: #333;
 }
+div.pages{
+    text-align: center;
+}
+div.pages>div{
+    width: 30px;
+    height: 30px;
+    padding: 6px 8px;
+    background: #67b168;
+
+    border-radius: 3px; 
+    
+    margin-top: 5px; 
+    right: 2px;
+    top: 3px;
+    cursor: pointer;
+    display: inline-block;
+}
+div.pages>div span{
+    text-align: center;
+    color: #333;
+}
 
 
 input.save[type="button"], input.save[type="submit"]{

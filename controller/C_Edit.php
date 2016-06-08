@@ -118,6 +118,8 @@ class C_Edit extends C_Base{
                $queryObj[$key . '_ru'] = $request[$key]; 
             }
         }
+        
+        $queryObj['articles_last_update'] = date('Y-m-d H:i:s'); 
         $message = $this->mArticles->save('articles', $queryObj, "id_article={$request['id_article']}");
         return $message;
         

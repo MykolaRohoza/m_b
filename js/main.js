@@ -21,30 +21,30 @@ window.onload=function(){
     }
     reg();
     navbarCollapse();
-   avbarLife();
+   navbarLife();
 
 };
 
 function  navbarLife(){
     $('.nav > li > a ').on('mouseenter', function (){
         $(this).animate({
-            borderColor:"#000",
+            borderColor:"rgba(0, 0, 0, 1)",
             borderRadius: '10px',
-            color:'#6C7B8B',
-            backgroundColor:'#EEE'
+            color:'rgba(108, 123, 139, 1)',
+            backgroundColor:'rgba(238, 238, 238, 1)'
             
-        }, 300);
+        }, 500);
     });
     $('.nav > li > a ').on('mouseleave', function (){
-        var bgColor = ($(this).is('a.active'))?'#CAE1FF':"transparent",
-        tColor = ($(this).is('a.active'))?'#6C7B8B':'#FFF';
+        var bgColor = ($(this).is('a.active'))?'rgba(202, 225, 255, 1)':"transparent",
+        tColor = ($(this).is('a.active'))?'rgba(108, 123, 139, 1)':'rgba(255, 255, 255, 1)';
  
         $(this).animate({
             borderColor:"transparent",
             borderRadius: '0px',
             color: tColor,
             backgroundColor: bgColor
-        }, 300);
+        }, 500);
     });
 }
 

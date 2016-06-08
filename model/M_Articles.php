@@ -72,6 +72,27 @@ class M_Articles
         return $articles;
        
     }
+    public function getArticlesCount($article_func = 0, $id_article = 0, $article_dest = 0){
+        $query  = "SELECT COUNT(id_article) AS count FROM articles WHERE 1=1 ";
+        if($id_article != 0){
+            $query  .= "AND id_article=$id_article";
+        }
+        else{
+            if($article_func != 0){
+                $query  .= "AND article_func=$article_func ";
+            }
+            if($article_dest != 0){
+                $query  .= "AND article_dest=$article_dest ";
+            }
+
+        }
+
+        $result = $this->msql->Select($query);
+        
+
+        return $result[0]['count'];
+       
+    }
     
     /**
      * 
@@ -161,6 +182,108 @@ class M_Articles
         }
         return $articles;
     }
+    public function getPageNavigation($page_num, $articlesCount, $path, $articlesNum){
+        $disabled = 'style="background: #636b7b"';
+        $page_num = ($page_num)?$page_num:1;
+        $pageSum = (int)($articlesCount/$articlesNum);
+        if( $articlesCount % $articlesNum != 0) {
+            $pageSum++;
+        }
+        $result['page_num'] = $page_num;
+        
+        if($page_num > 1){
+            $result['back']['path'] = $path . ($page_num - 1);
+            $result['home']['path'] = $path . 1;
+        }
+        else{
+            $result['back']['disabled'] =  $disabled;
+            $result['home']['disabled'] =  $disabled;
+        }
+        if($page_num < $pageSum){
+            $result['next']['path'] = $path . ($page_num + 1);
+            $result['end']['path'] = $path . $pageSum;
+        }
+        else{
+            $result['next']['disabled'] = $disabled;
+            $result['end']['disabled'] = $disabled;
+        }
+
+        return $result;
+    }
+    
+//    public function getPageNavigation($page_num, $articlesCount, $mod, $articlesNum = 5){
+//        $page_num = ($page_num)?$page_num:1;
+//        $pageNav = array();
+//        if($articlesCount == 0){
+//            $pageNav['pageNum'] = $page_num;
+//            $pageNav['next']['disabled'] = "disabled='disabled' style='color:grey'";
+//            $pageNav['end']['disabled'] = "disabled='disabled' style='color:grey'";
+//            $pageNav['home']['disabled'] = "disabled='disabled' style='color:grey'";
+//            $pageNav['back']['disabled'] = "disabled='disabled' style='color:grey'";
+//            $pageNav['next']['pagesLeft'] = '';
+//            $pageNav['end']['pagesLeft'] = '';
+//            $pageNav['pageTotal'] = $pageNav['pageNum'];
+//            return $pageNav;
+//            
+//        }
+//        $pageNum = (int)($articlesCount/$articlesNum);
+//        if( $articlesCount % $articlesNum != 0) {
+//            $pageNum++;
+//            $pagesLeft = $articlesCount % $articlesNum;
+//        }
+//        else {
+//            $pagesLeft = $articlesNum;
+//        }
+//        $pageNav['pageTotal'] = $pageNum;
+//        
+//        switch ($mod){
+//            case -2:
+//                $page_num = 1;
+//                break;
+//            case -1:
+//                --$page_num;  
+//                break;
+//            case 1:
+//                ++$page_num;
+//                break;
+//            case 2:
+//                $page_num = $pageNum;
+//                break;
+//        }
+//        
+//        
+//        
+//        
+//        
+//        $pageNav['pageNum'] = $page_num;
+//        if($page_num <= 1) {
+//            $pageNav['home']['disabled'] = "disabled='disabled' style='color:grey'";
+//            $pageNav['back']['disabled'] = "disabled='disabled' style='color:grey'";
+//        }
+//        else{
+//            $pageNav['back']['pagesLeft'] = $articlesNum;
+//        }
+//
+//        if($page_num == ($pageNum - 1)){
+//            $pageNav['next']['pagesLeft'] = $pagesLeft;
+//        }
+//        else{
+//            $pageNav['next']['pagesLeft'] = $articlesNum;
+//        }
+//
+//        $pageNav['end']['pagesLeft'] = $pagesLeft;
+//
+//        if($pageNum  == $page_num){
+//            $pageNav['next']['disabled'] = "disabled='disabled' style='color:grey'";
+//            $pageNav['end']['disabled'] = "disabled='disabled' style='color:grey'";
+//            $pageNav['next']['pagesLeft'] = '';
+//            $pageNav['end']['pagesLeft'] = '';
+//        }
+//
+//
+//        return $pageNav;
+//
+//    }
     
     
 }

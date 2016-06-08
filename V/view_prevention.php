@@ -15,7 +15,36 @@
                 <?=$article['article_text']?>
                 </div>
             <?php endforeach;?>
+            <?php endif;?>  
+           
+            <?php if($pageNav):?> 
+
+            <div class="pages">
+                <div <?=$pageNav['home']['disabled'];?>>
+                    <a href="<?=$pageNav['home']['path'];?>">
+                        <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div <?=$pageNav['back']['disabled'];?>>
+                    <a href="<?=$pageNav['back']['path'];?>">
+                        <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <span>Страница номер <?=$pageNav['page_num'];?></span>
+                <div <?=$pageNav['next']['disabled'];?>>
+                    <a href="<?=$pageNav['next']['path'];?>">
+                        <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div <?=$pageNav['end']['disabled'];?>>
+                    <a href="<?=$pageNav['end']['path'];?>">
+                        <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
             <?php endif;?>       
+            
+            
         </div>
 
 <?=$stocks;?>

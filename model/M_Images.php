@@ -32,11 +32,15 @@ class M_Images
 
     }
 
-    
+    /**
+     * 
+     * @param type $file серверный массив File
+     * @param type $request
+     * @param type $query
+     * @return string
+     */
     public function imgOper($file, $request, $query){
         $message = '';
-
-    
         if($query['file_name']){
             //загрузка с возожным переименованием и регистрацией в альте
             $message = $this->imgUpload($file, $request);
@@ -64,8 +68,10 @@ class M_Images
     
     
     private function imgUpload($file, $request){
-        $new_name = ($request['name'])?$this->prepareName($file['tmp_name'], $new_name):$this->prepareName($file['tmp_name'], $file['name']);
-        if($file['size'] > 30000000){
+        $message = '';
+        $new_name = ($request['name'])?$this->prepareName($file['name'], $new_name):$this->prepareName($file['name'], $file['name']);
+
+        if($file['size'] > 3000000){
             $message .= 'Файл слишком велик ';
         }
         if($file['type'] != 'image/png' && $file['type'] != 'image/jpeg' && $file['type'] != 'image/gif'){
@@ -74,6 +80,7 @@ class M_Images
         if($file['error'] !=0){
             $message .= 'Ошибка сервера ';
         }
+
         if($message === ''){           
             new M_SimpleImage($file['tmp_name'], 'images/carousel/' . $new_name);
             new M_SimpleImage($file['tmp_name'], 'images/full/' . $new_name, false);

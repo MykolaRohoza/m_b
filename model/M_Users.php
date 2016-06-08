@@ -104,7 +104,7 @@ class M_Users
              return -2;
         }
         
-        $code = $this->GenerateStr(20);
+        $code = strtolower($this->GenerateStr(15));
         $obj = array('user_name' => $name, 'user_second_name' => $second, 'login' => $login,
             'password' => md5(md5($password)), 'user_code' => $code); 
         
@@ -636,6 +636,7 @@ private function GetSid(){
     
     public function deleteUser($id_user){
         $result = $this->msql->Del('users', "id_user=$id_user");
+        $result = $this->msql->Del('contact_infos', "contact_info=$id_user");
         return $result;
     }
 

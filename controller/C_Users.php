@@ -9,6 +9,7 @@ class C_Users extends C_Base {
 
     protected $contVars;
     private $where_corr;
+    private $role_corr;
 
 
 
@@ -79,7 +80,8 @@ class C_Users extends C_Base {
             $result = $this->mUsers->getUsers($roles);
         }
         else{
-            $result = $this->mUsers->getUsers(0, $this->_get[2], $this->where_corr);
+            $roles = ($this->role_corr)?$this->role_corr:0;
+            $result = $this->mUsers->getUsers($roles, $this->_get[2], $this->where_corr);
         }
         return $result;
     }
@@ -92,6 +94,7 @@ class C_Users extends C_Base {
             case 'all':
                 return 0;
             case 'new':
+                $this->role_corr = 100;
                 return -1;
             case 'del':
                 return -2;
