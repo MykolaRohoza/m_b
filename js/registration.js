@@ -90,12 +90,13 @@ function timer(){
 
     function time_for_sent(){
         time--;
-        var message = 'На вашу почту высланы инструкции по активации, выслать новый код можно будет через ' + time + ' секунд';
+        var message = 'На вашу почту высланы инструкции по активации,'
+        + 'выслать новый код можно будет через ' + time + ' секунд';
         switch(time){
             case 1:
                 message += 'у';
                 break;
-            case 2,3:
+            case 2,3,4:
                 message += 'ы';
                 break;
         }
@@ -118,7 +119,9 @@ function check(val, param, elem){
         url: '/resp/check=1&' + param + '=' + val + '',
         data: 'check=1&' + param + '=' + val,
         success: function(data){ 
+            //console.log(data);
             var result = JSON.parse(data);
+            
             if(result) {
                 showMessage(elem, 'Данный' + ' ' + contact + ' ' + 'уже есть в базе');
             }

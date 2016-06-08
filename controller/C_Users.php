@@ -8,7 +8,7 @@ class C_Users extends C_Base {
 
 
     protected $contVars;
-
+    private $where_corr;
 
 
 
@@ -79,7 +79,7 @@ class C_Users extends C_Base {
             $result = $this->mUsers->getUsers($roles);
         }
         else{
-            $result = $this->mUsers->getUsers(3, $this->_get[2]);
+            $result = $this->mUsers->getUsers(0, $this->_get[2], $this->where_corr);
         }
         return $result;
     }
@@ -95,6 +95,9 @@ class C_Users extends C_Base {
                 return -1;
             case 'del':
                 return -2;
+            case 'code':
+                $this->where_corr = ' AND user_code_status<>1 AND (login IS NULL OR password IS NULL)';
+                return -3;
             default : return 3; // users
         }
     }

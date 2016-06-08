@@ -18,10 +18,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script src="/js/jquery-1.10.2.min.js"></script>
-        
-        <?php if($require['ui']):?>
         <script src="/js/jquery_ui-1.10.3.min.js"></script>
-        <?php endif; ?>
+ 
         
         <script src="/js/hammer.js"></script>
         <script src="/js/bootstrap.min.js"></script>

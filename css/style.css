@@ -38,6 +38,11 @@ nav.navbar{
 }
 .nav>li>a:hover, .nav>li>a:focus{
     color: #6C7B8B;
+    
+}
+.nav>li>a{
+    border: 2px solid transparent;
+    
 }
 .nav a.active{
     color: #6C7B8B;
@@ -495,4 +500,10 @@ input.save[type="button"], input.save[type="submit"]{
     padding: 3px 5px;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 3px;
+}
+form.form_activate{
+    width: 50%;
+}
+form.form_activate label{
+    text-align: left;
 }

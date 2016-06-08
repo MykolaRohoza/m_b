@@ -90,8 +90,8 @@ class M_Users
     }
         
 
-    public function registrateNewUserForAdmin( $name, $second){
-        $obj = array('user_name' => $name, 'user_second_name' => $second);
+    public function registrateNewUserForAdmin($name, $second){
+        $obj = array('user_name' => $name, 'user_second_name' => $second, 'user_code' => strtolower($this->GenerateStr(15)));
         $result = $this->msql->Insert('users', $obj);
         return $result;
     }
@@ -141,18 +141,18 @@ class M_Users
     public function checkContact($contact, $user_code_status)
     {	
             $t = "SELECT DISTINCT u.id_user FROM users u RIGHT JOIN contact_infos c_i "
-                    . "ON u.id_user = c_i.contact_info WHERE c_i.contact = '%s' AND "
+                    . "ON u.id_user = c_i.contact_info WHERE (c_i.contact = '%s' OR u.login='%s') AND "
                     . "u.user_code_status=$user_code_status";
-            $query = sprintf($t, mysql_real_escape_string($contact));
+            $query = sprintf($t, mysql_real_escape_string($contact), mysql_real_escape_string($contact));
             $result = $this->msql->Select($query);
             return $result[0]['id_user'] > 0;
     }
-    private function checkLogin($contact, $user_code_status = 1)
+    public function checkLogin($contact, $user_code_status = 1)
     {	
         return $this->checkContact($contact, $user_code_status);
     }
     
-    private function checkPhone($telephone, $user_code_status=1)
+    public function checkPhone($telephone, $user_code_status=1)
     {	
         return $this->checkContact($telephone, $user_code_status);    
     }
@@ -168,10 +168,13 @@ class M_Users
             $object = array('user_code' => $resentObj['user_code'], 'user_code_status' => 0);
         }
         else{
-            $t = "SELECT DISTINCT id_user, user_code_status FROM users WHERE user_code = '%s'";
+            $t = "SELECT DISTINCT id_user, user_code_status, login, password FROM users WHERE user_code = '%s'";
             $query = sprintf($t, $code);
             $temp = $this->msql->Select($query);
             $result = $temp[0];
+            if(!($result['login'] && $result['password'])){
+                return -2;
+            }
             if($result['user_code_status'] == 1){
                 return -1;
             }
@@ -179,6 +182,18 @@ class M_Users
             $object = array('user_code' => $code, 'user_code_status' => 1);
         }
         return $this->msql->Update('users', $object, $where);
+    }
+    public function activateByInvite($code, $object){
+        $where = "user_code='$code' AND user_code_status='0'";
+        $object['user_code_status'] = 1;
+        $result = $this->msql->Update('users', $object, $where);
+        if($result == 0){
+            $result = $code;
+        }
+        else {
+            $result = 'OK';
+        }
+        return $result;
     }
 
         //
@@ -426,9 +441,13 @@ private function GetSid(){
     }
 
     public function getUsers($roles = 0, $id_user = 0, $where_corr = null){
-        $query = "SELECT u.id_user, u.login, u.user_name, u.user_second_name, u.id_role, u.exercises, u.diagnosis, "
-                . "r.description, c_i.contact, c_i.id_info, c_i.contact_dest, d.display_description, u.user_image, "
-                . "i.image_alt "
+        $select_corr = '';
+        if(strpos($where_corr, 'user_code_status')){
+            $select_corr = 'user_code,';
+        }
+        $query = "SELECT u.id_user, u.login, $select_corr u.user_name, u.user_second_name, u.id_role, u.exercises, "
+                . "u.diagnosis, r.description, c_i.contact, c_i.id_info, c_i.contact_dest, d.display_description, "
+                . "u.user_image, i.image_alt "
                 . "FROM users u LEFT JOIN roles r USING(id_role) LEFT JOIN contact_infos c_i "
                 . "ON c_i.contact_info=u.id_user LEFT JOIN displays d ON d.id_display=u.display "
                 . "LEFT JOIN images i ON i.image_name=u.user_image  WHERE 1=1 ";
@@ -438,17 +457,18 @@ private function GetSid(){
         $pr_key = 'id_user';
         $container = 'contacts';
         $unique_columns = array('contact', 'id_info', 'contact_dest');
-        if($roles !== 0){
+        if($roles != 0){
        
-            $t =  "AND id_role = '%d'";   
+            $t =  " AND id_role = '%d'";   
      
             $query .= sprintf($t, mysql_real_escape_string($roles));
         }
-        if($id_user !== 0){
-           $t =  "AND id_user = '%d'";
+        if($id_user != 0){
+           $t =  " AND id_user = '%d'";
            $query .= sprintf($t, mysql_real_escape_string($id_user));
         }        
         $result = $this->msql->SelectGroupByPrKey($query, $pr_key, $container, $unique_columns);
+
         foreach ($result as $key => $value) {
 
             $result[$key]['exercises'] = $this->validateExercises($value['exercises']);

@@ -1,4 +1,5 @@
 <?php
+   
 ?>
 <div class="container">
 
@@ -44,6 +45,9 @@
                 </a>
                 <a href="/users/new">
                    <b>+</b> Новый пользователь
+                </a>
+                <a href="/users/code">
+                    Код
                 </a>
             </div>
         <?php if(!$users):?>
@@ -148,6 +152,12 @@
                         <span>Отображение в контактах : </span> 
                         <span  ondblclick="span2changeble(this, true)"><?=$user['display_description']?></span><span>.</span>
                     </h4>
+                    <?php if($user['user_code']):?>
+                    <h4>
+                        <span>Ссылка для активации: </span> 
+                        <span>http://<?=$_SERVER['SERVER_NAME'];?>/activate/<?=$user['user_code']?></span>
+                    </h4>
+                    <?php endif;?>
                 </div> 
 
 
