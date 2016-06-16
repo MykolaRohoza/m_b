@@ -91,7 +91,7 @@
                             <div class="carousel-inner" role="listbox">
                                 <?php for($i = 0; $i < count($images); $i++): ?>
                                     <div class="item <?php if($i==0) {echo 'active';} ?> thumb">
-                                        <a class="fancyimage" data-fancybox-group="group" href="<?=$images[$i]['full_path'];?>"> 
+                                        <a rel="img_group" class="fancyimage" data-fancybox-group="group" href="<?=$images[$i]['full_path'];?>"> 
                                             <img class="img-responsive" src="<?=$images[$i]['path'];?>" alt="<?=$images[$i]['alt'];?>">
                                         </a>
                                     </div>

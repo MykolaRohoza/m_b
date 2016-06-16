@@ -41,7 +41,7 @@ class M_Exercises
         $object = array('exercise' => $new_ex);
         $table = 'exercises';
         if ($id_ex != 0){
-        $object['id_exercise'] = $id_ex;
+            $object['id_exercise'] = $id_ex;
             $message = $this->msql->Update($table, $object, $where, true, true);
         }
         else{

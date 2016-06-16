@@ -1,6 +1,7 @@
 
 body{
     position: relative;
+   
 }
 h1, h2, h3, ul{
     margin: 0;
@@ -254,6 +255,7 @@ label{
 /* go top */
 .back-to-top {
     cursor: pointer;
+    outline: none !important;
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -529,4 +531,19 @@ form.form_activate{
 }
 form.form_activate label{
     text-align: left;
+}
+
+.fancybox-nav, .btn{
+    outline: none !important;
+}
+a.fancybox-prev span{
+    background: url(../images/fancy_left.png) no-repeat;
+}
+a.fancybox-next span{
+    background: url(../images/fancy_right.png) no-repeat;
+}
+a.fancybox-close{
+    top: 9px;
+    right: 3px;
+    background: url(../images/fancy_closebox.png) no-repeat;
 }

@@ -51,7 +51,7 @@ class M_Users
         $temp = "id_user = '%d'";
         $where = sprintf($temp, $id_user);
         
-        return (bool)(($this->msql->Update('users', array('password'=>$password), $where))*1 > 0);
+        return (($this->msql->Update('users', array('password'=>$password), $where))*1 > 0);
     }
     
     //
@@ -123,7 +123,7 @@ class M_Users
                 }
 
             }
-            $result = ($result > 0);
+
             
         }
         

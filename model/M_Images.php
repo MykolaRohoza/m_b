@@ -84,8 +84,10 @@ class M_Images
         if($message === ''){           
             new M_SimpleImage($file['tmp_name'], 'images/carousel/' . $new_name);
             new M_SimpleImage($file['tmp_name'], 'images/full/' . $new_name, false);
-            
-            $this->setAlts($new_name,  $new_name, $request['alt'], $request['image_show']);
+
+            $object = array('image_alt' => $request['alt'], 'image_name' => $new_name, 
+                'image_show' => ($request['image_show'])?1:0);            
+            $this->insertImg($object);
             
             $message = 'Файл успешно загружен ';
         }  
@@ -93,7 +95,7 @@ class M_Images
     }
 
     public function getAlts($isAdmin = false){
-        $query = "SELECT image_name, image_alt, images_last_update FROM images";
+        $query = "SELECT image_name, image_alt FROM images";
         if(!$isAdmin) {
             $query .= " WHERE image_show='1'";
         }
@@ -101,8 +103,7 @@ class M_Images
         $result = array();
         if(count($res[0]) > 0){
             foreach ($res as $value){ 
-                $result[$value['image_name']] = $value['image_alt']
-                        /* . date('d.m.Y - [H:m:s]', strtotime($value['images_last_update']))*/;
+                $result[$value['image_name']] = $value['image_alt'];
             }
         }
         return $result;
@@ -110,26 +111,38 @@ class M_Images
 
     public function setAlts($image_name,  $image_new_name, $image_alt, $image_show){  
         $img_show = ($image_show)?1:0;
-        $object = array('image_alt' => $image_alt, 'image_name' => $image_new_name, 'image_show' => $img_show,
-            'images_last_update' => date('Y-m-d H:i:s'));
+        $object = array('image_alt' => $image_alt, 'image_name' => $image_new_name, 'image_show' => $img_show
+            ); //'images_last_update' => date('Y-m-d H:i:s')
         
         $table = 'images';
-        $result = ($this->msql->Update($table, $object, "image_name='$image_name'", true, true) > 0);
-        if(!$result){
-            $result = $this->msql->Insert($table, $object);
-        }
+        $result = $this->msql->Update($table, $object, "image_name='$image_name'", true, true);
         if($result){
-            $result = 'состояние фото успешно обновлено';
+            if($result > 0){
+                $result = 'Cостояние фото успешно обновлено';
+            }
+            else {
+                $result = 'Изменений состояния не обнаружено';
+            }
         }
         else{
-            $result = 'серверная ошибка';
+            $result = $this->insertImg($object);
+            if($result){
+                $result = 'Состояние фото успешно добавлено';
+            }
+            else{
+                $result = 'Cерверная ошибка';
+            }
+            
         }
  
 
         return $result;
     }
     
-    
+    private function insertImg($object){
+        $result = $this->msql->Insert('images', $object);
+        return $result;
+    }
     
     public function renameArticleImg($newName, $oldName){
         return $this->msql->Update('articles', array('article_img_name' => $newName), 

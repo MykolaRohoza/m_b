@@ -24,7 +24,7 @@ class M_Sender {
         ****************************************************/
         $this->website = "http://{$_SERVER['SERVER_NAME']}";       // Your site's domain (without www. part)
         $this->send_to = $send_to;  // backup file will be sent to?
-        $this->from = 'noreply@' . $_SERVER['SERVER_NAME'];    // some hosting providers won’t let you send backups from invalid e-mail address
+        $this->from = 'Центр Mind-Body  <noreply@' . $_SERVER['SERVER_NAME'] . '>';    // some hosting providers won’t let you send backups from invalid e-mail address
         $this->code = $code; 
 
     }
@@ -43,9 +43,9 @@ class M_Sender {
         
         $EOL = "\r\n";
 
-        $message = "Для активации перейдите по данной ссылке $EOL http://$this->website/activate/$this->code $EOL "
+        $message = "Для активации перейдите по данной ссылке $EOL $this->website/activate/$this->code $EOL "
                 . "Если ссылка не отработала $EOL вы можете вставить регистрационный код $this->code вручную "
-                . "в окне активации на странице $EOL  http://$this->website/activate";
+                . "в окне активации на странице $EOL  $this->website/activate";
         $subject = 'Активация аккаунта Mind-Body';
 
         $boundary = '_1_' . md5(date('r', time())) . '_2_'; // рандомное число

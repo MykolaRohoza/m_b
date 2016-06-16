@@ -120,14 +120,16 @@ class M_Articles
     public function setArticlesPosition($articles_pos){
         $artPosArr = explode("||", $articles_pos);
         $table = 'articles';
-        $sum  = 0;
+        $sum  = false;
         for($i = 0; $i < count($artPosArr); $i++) {
             if($artPosArr[$i]){
                 $val = explode("#", $artPosArr[$i]);
-                $sum +=  $this->msql->Update($table, array('article_pos'=>$val[0]), "id_article='{$val[1]}'");
+                if($this->msql->Update($table, array('article_pos'=>$val[0]), "id_article='{$val[1]}'") !== 0){
+                    $sum = true;
+                }
             }
         }
-        return ($sum > 0);
+        return $sum;
     }
 
     
@@ -141,13 +143,7 @@ class M_Articles
            
         }
         else{
-
-            if(is_numeric($message)){
-                $message =  ($message)?'статья успешно обновлена':'изменений в статье не найдено';
-            }
-            else {
-                $message = 'ошибка при сохранения';
-            }    
+            $message =  ($message > 0)?'статья успешно обновлена':'изменений в статье не найдено'; 
         }
 
         return $message;

@@ -1,7 +1,37 @@
 
 window.onload=function(){
     scroll();
-    $("a.fancyimage").fancybox(); 
+    $("a.fancyimage").fancybox({
+        'opacity'       : true,
+        'overlayShow'   : true,
+        'transitionIn'  : 'elastic',
+        'titlePosition' : 'over',
+        'overlayColor'      : '#000',
+        'overlayOpacity'    : 0.5,
+        'padding'           : 1,
+        'showCloseButton'  : true,    // отображения кнопки закрытия
+
+        'enableKeyboardNav' : true,
+        'enableEscapeButton' : true
+    }); 
+    
+        $("a[rel=img_group]").fancybox({
+        'opacity'       : true,
+	'overlayShow'   : true,
+        'transitionIn'  : 'elastic',
+        'titlePosition' : 'over', 
+        'overlayColor'      : '#000',
+        'overlayOpacity'    : 0.5,
+        'padding'           : 7,
+        'showCloseButton'  : true    // отображения кнопки закрытия
+//        'titleFormat'       : function(title, currentArray, currentIndex, currentOpts) {
+//            return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' 
+//                    + currentArray.length + (title.length ? ' &nbsp; ' + title : 'gfggf') + '</span>';
+//	}
+
+        });
+
+	     
     var adv = $('div.advertise h3');
     if(adv.length > 0){
         adv.siblings('p').hide();

@@ -1,4 +1,4 @@
-<?php
+  <?php
 //
 // Помощник работы с БД
 //
@@ -171,8 +171,10 @@ class M_MSQL
 		if (!$result) {
                     die('#' .mysql_errno() . ' - ' . mysql_error());
                 }
+
         $res = mysql_affected_rows();
-        //if(!$res && $result) $res = $result;
+
+        $res =(!$res && $result)? -1:$res;
         return 	$res;
 	}
 	

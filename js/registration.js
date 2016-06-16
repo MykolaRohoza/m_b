@@ -92,14 +92,9 @@ function timer(){
         time--;
         var message = 'На вашу почту высланы инструкции по активации,'
         + 'выслать новый код можно будет через ' + time + ' секунд';
-        switch(time){
-            case 1:
-                message += 'у';
-                break;
-            case 2,3,4:
-                message += 'ы';
-                break;
-        }
+
+        if(time === 1) message += 'у';
+        if(time > 1 && time < 5) message += 'ы';
         showMessage($('input[name="regestration"]'), message);
         $('input[name="regestration"]').attr('disabled', 'disabled');
         if (time <= 0){
